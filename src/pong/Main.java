@@ -58,16 +58,18 @@ public class Main extends Application implements BallCallBack
         {
             caught = right_racket.isInside(height);
         }
-        if(caught)
-            return;
-
-        System.out.print("\n");
-        if(left) {
-            System.out.println("You lost !");
+        if (!caught)
+        {
+            System.out.print("\n");
+            if (left)
+            {
+                System.out.println("You lost !");
+            }
+            else
+            {
+                System.out.println("You won!");
+            }
+            System.exit(0);
         }
-        else {
-            System.out.println("You won!");
-        }
-        System.exit(0);
     }
 }
