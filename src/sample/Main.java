@@ -1,32 +1,29 @@
 package sample;
 
-import javafx.animation.RotateTransition;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Box;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-public class Main extends Application
+public class Main extends Application implements BallCallBack
 {
+    private Racket left_racket;
+    private Racket right_racket;
+
     @Override
     public void start(Stage stage) throws Exception
     {
         int width = 2000;
         int height = 1000;
 
-        Ball ball = new Ball(width, height, 100, 100, 1, 10, 50);
+        Ball ball = new Ball(width, height, 200, 200, 1, 1);
+        ball.setBallCallBack(this);
+
+        left_racket = new HumanRacket(width, true);
+        right_racket = new AIBracket(width, false, ball);
 
         //Creating a Group object
-        Group root = new Group(ball);
+        Group root = new Group(ball, left_racket, right_racket);
 
         //Creating a scene object
         Scene scene = new Scene(root, width, height);
@@ -47,5 +44,28 @@ public class Main extends Application
     public static void main(String[] args)
     {
         launch(args);
+    }
+
+    @Override
+    public void ballHit(boolean left, double height)
+    {
+        System.out.print("Left: ");
+        System.out.print(left);
+        System.out.print("; Height:");
+        System.out.print(height);
+        System.out.print("\n");
+
+        boolean catched;
+        if (left)
+        {
+            catched = left_racket.isInside(height);
+        }
+        else
+        {
+            catched = right_racket.isInside(height);
+        }
+        System.out.print("\n");
+        System.out.print(catched);
+        System.out.print("\n");
     }
 }

@@ -7,7 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
-import static java.lang.Double.min;
+import static com.sun.javafx.util.Utils.clamp;
+
+interface BallCallBack
+{
+    void ballHit(boolean left, double height);
+}
 
 public class Ball extends Circle
 {
@@ -21,11 +26,11 @@ public class Ball extends Circle
     private double pos_x;
     private double pos_y;
 
-    private double radius;
+    private BallCallBack ballCallBack;
 
-    public Ball(int width, int height, double pos_x, double pos_y, double speed_x, double speed_y, double radius)
+    public Ball(int width, int height, double pos_x, double pos_y, double speed_x, double speed_y)
     {
-        super(radius);
+        super(Parameters.ballRadius);
 
         this.width = width;
         this.height = height;
@@ -35,8 +40,6 @@ public class Ball extends Circle
 
         this.speed_x = speed_x;
         this.speed_y = speed_y;
-
-        this.radius = radius;
 
         setTranslateX(pos_x);
         setTranslateY(pos_y);
@@ -49,61 +52,75 @@ public class Ball extends Circle
         timeline.play();
     }
 
+    public void setBallCallBack(BallCallBack ballCallBack)
+    {
+        this.ballCallBack = ballCallBack;
+    }
+
     private void next(ActionEvent e)
     {
         double dt;
-        double new_speed_x;
-        double new_speed_y;
+        final double border_size = Parameters.ballRadius + 2 * Parameters.racket_width;
+
+        double dt_x = (border_size - pos_x) / speed_x;
+        boolean left = true;
+        if (dt_x <= 0)
         {
-            double dt_x = (radius - pos_x) / speed_x;
-            if (dt_x <= 0)
-            {
-                dt_x = (width - radius - pos_x) / speed_x;
-            }
-
-            double dt_y = (radius - pos_y) / speed_y;
-            if (dt_y <= 0)
-            {
-                dt_y = (height - radius - pos_y) / speed_y;
-            }
-
-            if (dt_x < dt_y)
-            {
-                dt = dt_x;
-                new_speed_x = -speed_x;
-                new_speed_y = speed_y;
-            }
-            else
-            {
-                dt = dt_y;
-                new_speed_x = speed_x;
-                new_speed_y = -speed_y;
-            }
-
+            dt_x = (width - border_size - pos_x) / speed_x;
+            left = false;
         }
 
-        System.out.print(dt);
-        System.out.print("; Speed: (");
-        System.out.print(speed_x);
-        System.out.print(", ");
-        System.out.print(speed_y);
-        System.out.print("); Position: (");
-        System.out.print(pos_x);
-        System.out.print(", ");
-        System.out.print(pos_y);
-        System.out.print(")\n");
-        pos_x += speed_x * dt;
-        pos_y += speed_y * dt;
+        double dt_y = (border_size - pos_y) / speed_y;
+        if (dt_y <= 0)
+        {
+            dt_y = (height - border_size - pos_y) / speed_y;
+        }
 
-        speed_x = new_speed_x;
-        speed_y = new_speed_y;
+        if (dt_x < dt_y)
+        {
+            dt = dt_x;
 
-        // Add another action
-        timeline.getKeyFrames().add(
-                new KeyFrame(timeline.getCurrentTime().add(Duration.millis(dt)),
-                        new KeyValue(translateXProperty(), pos_x),
-                        new KeyValue(translateYProperty(), pos_y)));
-        // Restart the timeline
+            pos_x += speed_x * dt;
+            pos_y += speed_y * dt;
+
+            speed_x = -speed_x;
+            speed_y = speed_y;
+
+            ballCallBack.ballHit(left, pos_y);
+        }
+        else
+        {
+            dt = dt_y;
+
+            pos_x += speed_x * dt;
+            pos_y += speed_y * dt;
+
+            speed_x = speed_x;
+            speed_y = -speed_y;
+        }
+
+        pos_x = clamp(0, pos_x, width);
+        pos_y = clamp(0, pos_y, height);
+
+//        System.out.print(dt);
+//        System.out.print("; Speed: (");
+//        System.out.print(speed_x);
+//        System.out.print(", ");
+//        System.out.print(speed_y);
+//        System.out.print("); Position: (");
+//        System.out.print(pos_x);
+//        System.out.print(", ");
+//        System.out.print(pos_y);
+//        System.out.print(")\n");
+
+        KeyValue keyvalue_x = new KeyValue(translateXProperty(), pos_x);
+        KeyValue keyvalue_y = new KeyValue(translateYProperty(), pos_y);
+
+        Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
+
+        KeyFrame keyframe = new KeyFrame(time, keyvalue_x, keyvalue_y);
+
+        timeline.getKeyFrames().add(keyframe);
         timeline.playFrom(timeline.getCurrentTime());
     }
 }
