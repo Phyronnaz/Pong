@@ -1,4 +1,4 @@
-package sample;
+package pong;
 
 import javafx.scene.shape.Rectangle;
 

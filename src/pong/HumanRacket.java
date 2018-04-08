@@ -1,4 +1,4 @@
-package sample;
+package pong;
 
 import javafx.beans.value.ChangeListener;
 import javafx.scene.Scene;
