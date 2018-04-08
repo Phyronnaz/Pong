@@ -78,14 +78,17 @@ public class Ball extends Circle
             dt_x = (width - border_size - pos_x) / speed_x;
         }
 
-        double dt_y = (border_size - pos_y) / speed_y;
+        double dt_y = (Parameters.ballRadius - pos_y) / speed_y;
         if (dt_y <= 0)
         {
-            dt_y = (height - border_size - pos_y) / speed_y;
+            dt_y = (height - Parameters.ballRadius - pos_y) / speed_y;
         }
 
         final double dt = min(dt_x, dt_y);
-        assert dt >= 0;
+        if (dt < 0)
+        {
+            System.out.print("Error!");
+        }
 
         pos_x += speed_x * dt;
         pos_y += speed_y * dt;
@@ -94,13 +97,25 @@ public class Ball extends Circle
         {
             speed_x = -speed_x;
         }
+        else if (dt_y < dt_x)
+        {
+            speed_y = -speed_y;
+        }
         else
         {
+            speed_x = -speed_x;
             speed_y = -speed_y;
         }
 
         pos_x = clamp(0, pos_x, width);
         pos_y = clamp(0, pos_y, height);
+
+//        System.out.print(pos_x);
+//        System.out.print("; ");
+//        System.out.print(pos_y);
+//        System.out.print("; ");
+//        System.out.print(dt);
+//        System.out.print("\n");
 
         KeyValue keyvalue_x = new KeyValue(translateXProperty(), pos_x);
         KeyValue keyvalue_y = new KeyValue(translateYProperty(), pos_y);

@@ -16,10 +16,10 @@ public class Main extends Application implements BallCallBack
         int width = 1000;
         int height = 500;
 
-        Ball ball = new Ball(width, height, 200, 200, 0.3, 0.3);
+        Ball ball = new Ball(width, height, 200, 200, 2, 2);
         ball.setBallCallBack(this);
 
-        left_racket = new HumanRacket(width, true);
+        left_racket = new AIBracket(width, true, ball);
         right_racket = new AIBracket(width, false, ball);
 
         //Creating a Group object
