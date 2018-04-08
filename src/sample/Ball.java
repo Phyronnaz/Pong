@@ -60,14 +60,15 @@ public class Ball extends Circle
 
     private void next(ActionEvent e)
     {
-        double dt;
         final double border_size = Parameters.ballRadius + 2 * Parameters.racket_width;
 
 
-        if(pos_x <= border_size+1) {
+        if (pos_x <= border_size + 1)
+        {
             ballCallBack.ballHit(true, getTranslateY());
         }
-        else if(pos_x >= width - border_size -1) {
+        else if (pos_x >= width - border_size - 1)
+        {
             ballCallBack.ballHit(false, getTranslateY());
         }
 
@@ -77,15 +78,18 @@ public class Ball extends Circle
             dt_x = (width - border_size - pos_x) / speed_x;
         }
 
-        double dt_y = (Parameters.ballRadius - pos_y) / speed_y;
+        double dt_y = (border_size - pos_y) / speed_y;
         if (dt_y <= 0)
         {
-            dt_y = (height - Parameters.ballRadius - pos_y) / speed_y;
+            dt_y = (height - border_size - pos_y) / speed_y;
         }
 
-        dt = min(dt_x, dt_y);
+        final double dt = min(dt_x, dt_y);
+        assert dt >= 0;
+
         pos_x += speed_x * dt;
         pos_y += speed_y * dt;
+
         if (dt_x < dt_y)
         {
             speed_x = -speed_x;
