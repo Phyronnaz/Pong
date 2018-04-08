@@ -13,10 +13,10 @@ public class Main extends Application implements BallCallBack
     @Override
     public void start(Stage stage) throws Exception
     {
-        int width = 2000;
-        int height = 1000;
+        int width = 1000;
+        int height = 500;
 
-        Ball ball = new Ball(width, height, 200, 200, 1, 1);
+        Ball ball = new Ball(width, height, 200, 200, 0.3, 0.3);
         ball.setBallCallBack(this);
 
         left_racket = new HumanRacket(width, true);
@@ -29,7 +29,7 @@ public class Main extends Application implements BallCallBack
         Scene scene = new Scene(root, width, height);
 
         //Setting title to the Stage
-        stage.setTitle("Drawing a cylinder");
+        stage.setTitle("Pong");
 
         //Adding scene to the stage
         stage.setScene(scene);
@@ -49,23 +49,25 @@ public class Main extends Application implements BallCallBack
     @Override
     public void ballHit(boolean left, double height)
     {
-        System.out.print("Left: ");
-        System.out.print(left);
-        System.out.print("; Height:");
-        System.out.print(height);
-        System.out.print("\n");
-
-        boolean catched;
+        boolean caught;
         if (left)
         {
-            catched = left_racket.isInside(height);
+            caught = left_racket.isInside(height);
         }
         else
         {
-            catched = right_racket.isInside(height);
+            caught = right_racket.isInside(height);
         }
+        if(caught)
+            return;
+
         System.out.print("\n");
-        System.out.print(catched);
-        System.out.print("\n");
+        if(left) {
+            System.out.println("You lost !");
+        }
+        else {
+            System.out.println("You won!");
+        }
+        System.exit(0);
     }
 }
