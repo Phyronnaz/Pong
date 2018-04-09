@@ -63,7 +63,7 @@ public class Main extends Application implements BallCallBack
             System.out.print("\n");
             if (left)
             {
-                System.out.println("You lost !");
+                System.out.println("You lost!");
             }
             else
             {
