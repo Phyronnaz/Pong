@@ -27,6 +27,8 @@ public class Ball extends Circle
     private double pos_x;
     private double pos_y;
 
+    private boolean stop = false;
+
     private BallCallBack ballCallBack;
 
     public Ball(int width, int height, double pos_x, double pos_y, double speed_x, double speed_y)
@@ -51,6 +53,11 @@ public class Ball extends Circle
     public void play()
     {
         timeline.play();
+    }
+
+    public void stop()
+    {
+        stop = true;
     }
 
     public void setBallCallBack(BallCallBack ballCallBack)
@@ -117,14 +124,17 @@ public class Ball extends Circle
 //        System.out.print(dt);
 //        System.out.print("\n");
 
-        KeyValue keyvalue_x = new KeyValue(translateXProperty(), pos_x);
-        KeyValue keyvalue_y = new KeyValue(translateYProperty(), pos_y);
+        if (!stop)
+        {
+            KeyValue keyvalue_x = new KeyValue(translateXProperty(), pos_x);
+            KeyValue keyvalue_y = new KeyValue(translateYProperty(), pos_y);
 
-        Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
+            Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
 
-        KeyFrame keyframe = new KeyFrame(time, keyvalue_x, keyvalue_y);
+            KeyFrame keyframe = new KeyFrame(time, keyvalue_x, keyvalue_y);
 
-        timeline.getKeyFrames().add(keyframe);
-        timeline.playFrom(timeline.getCurrentTime());
+            timeline.getKeyFrames().add(keyframe);
+            timeline.playFrom(timeline.getCurrentTime());
+        }
     }
 }

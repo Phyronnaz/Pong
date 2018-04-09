@@ -11,7 +11,7 @@ public class HumanRacket extends Racket
         super(width, left);
 
         ChangeListener<Scene> listener = (obs, old, newValue) -> newValue.setOnKeyPressed(this::actionOnKeyPressed);
-        ;
+
         sceneProperty().addListener(listener);
     }
 
