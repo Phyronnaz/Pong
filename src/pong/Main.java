@@ -28,7 +28,7 @@ public class Main extends Application implements BallCallBack
         ball = new Ball(width, height, 200, 200, 0.5, 0.5);
         ball.setBallCallBack(this);
 
-        left_racket = new HumanRacket(width, true);
+        left_racket = new AIBracket(width, true, ball);
         right_racket = new AIBracket(width, false, ball);
 
         explosion = new ImageView();

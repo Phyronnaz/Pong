@@ -4,18 +4,22 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import static com.sun.javafx.util.Utils.clamp;
 import static java.lang.Double.min;
+import static java.lang.Math.atan2;
+import static java.lang.Math.toDegrees;
 
 interface BallCallBack
 {
     void ballHit(boolean left, double height);
 }
 
-public class Ball extends Circle
+public class Ball extends ImageView
 {
     private Timeline timeline = new Timeline();
     private int width;
@@ -29,11 +33,28 @@ public class Ball extends Circle
 
     private boolean stop = false;
 
+    private double offset_x = 0;
+    private double offset_y = 0;
+
     private BallCallBack ballCallBack;
+
+    public double getPosY()
+    {
+        return getTranslateY() - offset_y;
+    }
 
     public Ball(int width, int height, double pos_x, double pos_y, double speed_x, double speed_y)
     {
-        super(Parameters.ballRadius);
+//        super(Parameters.ballRadius);
+
+        setImage(new Image(this.getClass().getResource("car.png").toExternalForm()));
+
+        setScaleX(0.1);
+        setScaleY(0.1);
+
+        offset_x = -getImage().getWidth() / 2;
+        offset_y = -getImage().getHeight() / 2;
+
 
         this.width = width;
         this.height = height;
@@ -72,11 +93,11 @@ public class Ball extends Circle
 
         if (pos_x <= border_size + 1)
         {
-            ballCallBack.ballHit(true, getTranslateY());
+            ballCallBack.ballHit(true, getPosY());
         }
         else if (pos_x >= width - border_size - 1)
         {
-            ballCallBack.ballHit(false, getTranslateY());
+            ballCallBack.ballHit(false, getPosY());
         }
 
         double dt_x = (border_size - pos_x) / speed_x;
@@ -126,8 +147,12 @@ public class Ball extends Circle
 
         if (!stop)
         {
-            KeyValue keyvalue_x = new KeyValue(translateXProperty(), pos_x);
-            KeyValue keyvalue_y = new KeyValue(translateYProperty(), pos_y);
+            KeyValue keyvalue_x = new KeyValue(translateXProperty(), pos_x + offset_x);
+            KeyValue keyvalue_y = new KeyValue(translateYProperty(), pos_y + offset_y);
+
+            setRotate(toDegrees(atan2(speed_y, speed_x)) + 90);
+
+            KeyValue keyvalue_rotation = new KeyValue(rotateProperty(), toDegrees(atan2(speed_x, speed_y)));
 
             Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
 

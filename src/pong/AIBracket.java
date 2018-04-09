@@ -22,7 +22,7 @@ public class AIBracket extends Racket
 
     private void next(ActionEvent e)
     {
-        double new_height = ball.getTranslateY() - Parameters.racket_height / 2;
+        double new_height = ball.getPosY() - Parameters.racket_height / 2;
         KeyValue height_keyvalue = new KeyValue(translateYProperty(), new_height);
 
         Duration time = timeline.getCurrentTime().add(Duration.millis(Parameters.aiTickRate));
