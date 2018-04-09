@@ -15,25 +15,34 @@ import javafx.util.Duration;
 
 public class Main extends Application implements BallCallBack
 {
-    private Racket left_racket;
-    private Racket right_racket;
+    private Racket leftRacket;
+    private Racket rightRacket;
     private Ball ball;
     private ImageView explosion;
 
     private int width = 1000;
     private int height = 500;
 
+    private int xOffSet = 100;
+    private int yOffSet = 50;
+
+    private Group root;
+
     private void initGame()
     {
         ball = new Ball(width, height, 200, 200, 0.5, 0.5);
         ball.setBallCallBack(this);
 
-        left_racket = new HumanRacket(width, true);
-        right_racket = new AIBracket(width, false, ball);
+        leftRacket = new HumanRacket(width, true);
+        leftRacket.initTextFlow(xOffSet, yOffSet);
+
+        rightRacket = new HumanRacket(width, false);
+        rightRacket.initTextFlow(width - xOffSet, yOffSet);
 
         explosion = new ImageView();
         explosion.setImage(new Image(this.getClass().getResource("explosion.gif").toExternalForm()));
         explosion.setOpacity(0);
+
     }
 
     private void startGame()
@@ -47,7 +56,7 @@ public class Main extends Application implements BallCallBack
         initGame();
 
         //Creating a Group object
-        Group root = new Group(ball, left_racket, right_racket, explosion);
+        Group root = new Group(ball, leftRacket, rightRacket, leftRacket.getTextFlow(), rightRacket.getTextFlow());
 
         //Creating a scene object
         Scene scene = new Scene(root, width, height);
@@ -76,26 +85,38 @@ public class Main extends Application implements BallCallBack
         boolean caught;
         if (left)
         {
-            caught = left_racket.isInside(height);
+            caught = leftRacket.isInside(height);
         }
         else
         {
-            caught = right_racket.isInside(height);
+            caught = rightRacket.isInside(height);
         }
         if (!caught)
         {
             System.out.print("\n");
             if (left)
             {
-                System.out.println("You lost!");
+                leftRacket.incScore();
+                leftRacket.setRacketText(leftRacket.getRacketScore());
+                System.out.println("You lost !");
             }
             else
             {
+                rightRacket.incScore();
+                rightRacket.setRacketText(leftRacket.getRacketScore());
                 System.out.println("You won!");
             }
 
-            ball.stop();
+            //System.out.print(leftRacket.getRacketScore());
+            //System.out.print(" - ");
+            //System.out.print(rightRacket.getRacketScore());
+            //System.out.print("\n");
 
+            // System.exit(0);
+
+            // ball.stop();
+
+            /*
             {
                 explosion.setOpacity(1);
                 explosion.setTranslateX(ball.getTranslateX() - explosion.getImage().getWidth() / 2);
@@ -135,6 +156,7 @@ public class Main extends Application implements BallCallBack
 
                 timeline.play();
             }
+            */
         }
     }
 }

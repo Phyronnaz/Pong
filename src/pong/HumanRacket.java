@@ -6,9 +6,16 @@ import javafx.scene.input.KeyEvent;
 
 public class HumanRacket extends Racket
 {
+
+    boolean isLeft;
+
     public HumanRacket(int width, boolean left)
     {
         super(width, left);
+
+        System.out.print(left);
+
+        isLeft = left;
 
         ChangeListener<Scene> listener = (obs, old, newValue) -> newValue.setOnKeyPressed(this::actionOnKeyPressed);
 
@@ -17,9 +24,23 @@ public class HumanRacket extends Racket
 
     private void actionOnKeyPressed(KeyEvent event)
     {
-        switch (event.getCode())
+        System.out.print("\n");
+        System.out.print(this.isLeft);
+        if (this.isLeft)
         {
-            case UP:
+            switch (event.getCode())
+            {
+                case LEFT:
+                    setTranslateY(getTranslateY() - Parameters.inputDelta);
+                    break;
+                case RIGHT:
+                    setTranslateY(getTranslateY() + Parameters.inputDelta);
+                    break;
+            }
+        }
+        else {
+            switch (event.getCode()) {
+                case UP:
                 setTranslateY(getTranslateY() - Parameters.inputDelta);
                 break;
             case DOWN:
@@ -28,3 +49,5 @@ public class HumanRacket extends Racket
         }
     }
 }
+}
+
