@@ -16,13 +16,7 @@ public class Main extends Application
         Ball ball = new Ball(engine, world, new Vector2D(1, 1), new Vector2D(500, 250));
         new CircleBallRender(engine, ball);
 
-        Segment segment0 = new Segment(new Vector2D(200, 200), new Vector2D(200, 400));
-        world.addStaticCollision(segment0);
-        new SegmentRender(engine, segment0);
-
-        Segment segment1 = new Segment(new Vector2D(400, 200), new Vector2D(400, 400));
-        world.addStaticCollision(segment1);
-        new SegmentRender(engine, segment1);
+        world = Level.createLevel(world, engine,1);
 
         new AIRacket(engine, ball, RacketSide.LEFT, 0.2);
         new HumanRacket(engine, ball, RacketSide.RIGHT, 2);

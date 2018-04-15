@@ -93,7 +93,7 @@ public class Engine
                 }
         );
 
-        this.scoresText = new Text((windowWidth / 2) - 25, 40, ""); // 25 is the empirical text width
+        this.scoresText = new Text((windowWidth / 2) - 18, 35, ""); // 18 is the empirical text width
         this.scoresText.setScaleX(5);
         this.scoresText.setScaleY(5);
         this.scoresText.setScaleZ(5);
@@ -103,7 +103,7 @@ public class Engine
 
     public void updateScores()
     {
-        scoresText.setText(leftScore.getValue() + " | " + rightScore.getValue());
+        scoresText.setText(leftScore.getValue() + "   -   " + rightScore.getValue());
     }
 
     public DoubleProperty getRacketYProperty(RacketSide side)
