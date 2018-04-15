@@ -1,140 +1,85 @@
 package pong;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.scene.shape.Circle;
-import javafx.util.Duration;
-
 import static com.sun.javafx.util.Utils.clamp;
-import static java.lang.Double.min;
 
-interface BallCallBack
+public class Ball implements EngineObject
 {
-    void ballHit(boolean left, double height);
-}
+    private final World world;
+    private final Engine engine;
 
-public class Ball extends Circle
-{
-    private Timeline timeline = new Timeline();
-    private int width;
-    private int height;
+    private final double radius;
+    private final Vector2D initialSpeed;
+    private final Vector2D initialPosition;
 
-    private double speed_x;
-    private double speed_y;
+    private BallRender ballRender;
 
-    private double pos_x;
-    private double pos_y;
+    private Vector2D speed;
+    private Vector2D position;
 
-    private boolean stop = false;
-
-    private BallCallBack ballCallBack;
-
-    public Ball(int width, int height, double pos_x, double pos_y, double speed_x, double speed_y)
+    public Ball(Engine engine, World world, double radius, Vector2D speed, Vector2D position)
     {
-        super(Parameters.ballRadius);
+        this.world = world;
+        this.engine = engine;
 
-        this.width = width;
-        this.height = height;
+        this.radius = radius;
+        this.initialSpeed = speed;
+        this.initialPosition = position;
 
-        this.pos_x = pos_x;
-        this.pos_y = pos_y;
-
-        this.speed_x = speed_x;
-        this.speed_y = speed_y;
-
-        setTranslateX(pos_x);
-        setTranslateY(pos_y);
-
-        timeline.setOnFinished(this::next);
+        this.speed = speed;
+        this.position = position;
     }
 
-    public void play()
+    public void setBallRender(BallRender ballRender)
     {
-        timeline.play();
+        this.ballRender = ballRender;
     }
 
-    public void stop()
+    public double getRadius()
     {
-        stop = true;
+        return radius;
     }
 
-    public void setBallCallBack(BallCallBack ballCallBack)
+    @Override
+    public void start()
     {
-        this.ballCallBack = ballCallBack;
+        ballRender.setOnFinished(this::next);
+        ballRender.setNewPosition(this.position, 0);
+        ballRender.play();
     }
 
-    private void next(ActionEvent e)
+    @Override
+    public void reset()
     {
-        final double border_size = Parameters.ballRadius + 2 * Parameters.racket_width;
+        position = initialPosition;
+        speed = initialSpeed;
+        ballRender.setNewPosition(this.position, 0);
+        ballRender.play();
+    }
 
-
-        if (pos_x <= border_size + 1)
+    private void next()
+    {
+        if (engine.checkIfWon(position))
         {
-            ballCallBack.ballHit(true, getTranslateY());
-        }
-        else if (pos_x >= width - border_size - 1)
-        {
-            ballCallBack.ballHit(false, getTranslateY());
-        }
-
-        double dt_x = (border_size - pos_x) / speed_x;
-        if (dt_x <= 0)
-        {
-            dt_x = (width - border_size - pos_x) / speed_x;
-        }
-
-        double dt_y = (Parameters.ballRadius - pos_y) / speed_y;
-        if (dt_y <= 0)
-        {
-            dt_y = (height - Parameters.ballRadius - pos_y) / speed_y;
-        }
-
-        final double dt = min(dt_x, dt_y);
-        if (dt < 0)
-        {
-            System.out.print("Error!");
-        }
-
-        pos_x += speed_x * dt;
-        pos_y += speed_y * dt;
-
-        if (dt_x < dt_y)
-        {
-            speed_x = -speed_x;
-        }
-        else if (dt_y < dt_x)
-        {
-            speed_y = -speed_y;
+            ballRender.die();
         }
         else
         {
-            speed_x = -speed_x;
-            speed_y = -speed_y;
-        }
+            CollisionPoint collisionPoint = world.getClosestIntersection(position, speed, radius);
+            assert collisionPoint != null;
 
-        pos_x = clamp(0, pos_x, width);
-        pos_y = clamp(0, pos_y, height);
+            final double dt = collisionPoint.getDt();
 
-//        System.out.print(pos_x);
-//        System.out.print("; ");
-//        System.out.print(pos_y);
-//        System.out.print("; ");
-//        System.out.print(dt);
-//        System.out.print("\n");
+            System.out.print(dt);
+            System.out.print("\n");
+            System.out.print(speed.x);
+            System.out.print("; ");
+            System.out.print(speed.y);
+            System.out.print("\n");
 
-        if (!stop)
-        {
-            KeyValue keyvalue_x = new KeyValue(translateXProperty(), pos_x);
-            KeyValue keyvalue_y = new KeyValue(translateYProperty(), pos_y);
+            position = position.add(speed.mul(dt));
+            speed = collisionPoint.getNewSpeed();
 
-            Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
-
-            KeyFrame keyframe = new KeyFrame(time, keyvalue_x, keyvalue_y);
-
-            timeline.getKeyFrames().add(keyframe);
-            timeline.playFrom(timeline.getCurrentTime());
+            ballRender.setNewPosition(position, dt);
         }
     }
 }

@@ -1,0 +1,26 @@
+package pong;
+
+public class CollisionPoint
+{
+    private final double dt;
+    private final Vector2D newSpeed;
+
+    public CollisionPoint(double dt, Vector2D newSpeed)
+    {
+        assert dt >= 0;
+        assert newSpeed.x != 0 || newSpeed.y != 0;
+
+        this.dt = dt;
+        this.newSpeed = newSpeed;
+    }
+
+    public double getDt()
+    {
+        return dt;
+    }
+
+    public Vector2D getNewSpeed()
+    {
+        return newSpeed;
+    }
+}
