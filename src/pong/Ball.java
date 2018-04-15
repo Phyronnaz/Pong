@@ -1,8 +1,9 @@
 package pong;
 
-import static com.sun.javafx.util.Utils.clamp;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 
-public class Ball implements EngineObject
+public class Ball implements ScriptObject
 {
     private final World world;
     private final Engine engine;
@@ -16,17 +17,19 @@ public class Ball implements EngineObject
     private Vector2D speed;
     private Vector2D position;
 
-    public Ball(Engine engine, World world, double radius, Vector2D speed, Vector2D position)
+    public Ball(Engine engine, World world, Vector2D speed, Vector2D position)
     {
         this.world = world;
         this.engine = engine;
 
-        this.radius = radius;
+        this.radius = engine.getBallRadius();
         this.initialSpeed = speed;
-        this.initialPosition = position;
+        this.initialPosition = new Vector2D(engine.getWorldWidth() / 2, engine.getWorldHeight() / 2);
 
         this.speed = speed;
         this.position = position;
+
+        engine.addScriptObject(this);
     }
 
     public void setBallRender(BallRender ballRender)
@@ -50,36 +53,32 @@ public class Ball implements EngineObject
     @Override
     public void reset()
     {
+        ballRender.reset();
         position = initialPosition;
         speed = initialSpeed;
         ballRender.setNewPosition(this.position, 0);
         ballRender.play();
     }
 
+    public DoubleProperty heightProperty()
+    {
+        return ballRender.heightProperty();
+    }
+
     private void next()
     {
-        if (engine.checkIfWon(position))
-        {
-            ballRender.die();
-        }
-        else
-        {
-            CollisionPoint collisionPoint = world.getClosestIntersection(position, speed, radius);
-            assert collisionPoint != null;
+        Vector2D oldPosition = position;
 
-            final double dt = collisionPoint.getDt();
+        CollisionPoint collisionPoint = world.getClosestIntersection(position, speed, radius);
+        assert collisionPoint != null;
 
-            System.out.print(dt);
-            System.out.print("\n");
-            System.out.print(speed.x);
-            System.out.print("; ");
-            System.out.print(speed.y);
-            System.out.print("\n");
+        final double dt = collisionPoint.getDt();
 
-            position = position.add(speed.mul(dt));
-            speed = collisionPoint.getNewSpeed();
+        position = position.add(speed.mul(dt));
+        speed = collisionPoint.getNewSpeed();
 
-            ballRender.setNewPosition(position, dt);
-        }
+        ballRender.setNewPosition(position, dt);
+
+        engine.checkIfWon(oldPosition);
     }
 }

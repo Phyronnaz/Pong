@@ -23,46 +23,21 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        Engine engine = new Engine(width, height, 0, 0);
+        Engine engine = new Engine(stage, width, height, 50, 50, 10, 49);
         World world = new World(engine);
 
-        Ball ball = new Ball(engine, world, 49, new Vector2D(-1, 1), new Vector2D(100, 100));
-        CircleBallRender ballRender = new CircleBallRender(engine, ball);
+        Ball ball = new Ball(engine, world, new Vector2D(1, 1), new Vector2D(500, 250));
+        new CircleBallRender(engine, ball);
 
-        Segment segment0 = new Segment(new Vector2D(700, 300), new Vector2D(700, 500));
-        Segment segment1 = new Segment(new Vector2D(200, 100), new Vector2D(200, 250));
-        Segment segment2 = new Segment(new Vector2D(300, 100), new Vector2D(300, 300));
-        Segment segment3 = new Segment(new Vector2D(400, 300), new Vector2D(400, 400));
-        Segment segment4 = new Segment(new Vector2D(500, 100), new Vector2D(500, 200));
+//        Segment segment0 = new Segment(new Vector2D(200, 200), new Vector2D(500, 500));
+//        world.addStaticCollision(segment0);
+//
+//        new SegmentRender(engine, segment0);
 
-        world.addStaticCollision(segment0);
-        world.addStaticCollision(segment1);
-        world.addStaticCollision(segment2);
-        world.addStaticCollision(segment3);
-        world.addStaticCollision(segment4);
+        new AIRacket(engine, ball, RacketSide.LEFT, 1);
+        new AIRacket(engine, ball, RacketSide.RIGHT, 1);
 
-        SegmentRender segmentRender0 = new SegmentRender(engine, segment0);
-        SegmentRender segmentRender1 = new SegmentRender(engine, segment1);
-        SegmentRender segmentRender2 = new SegmentRender(engine, segment2);
-        SegmentRender segmentRender3 = new SegmentRender(engine, segment3);
-        SegmentRender segmentRender4 = new SegmentRender(engine, segment4);
-
-        //Creating a Group object
-        Group root = new Group(ballRender, segmentRender0, segmentRender1, segmentRender2, segmentRender3, segmentRender4);
-
-        //Creating a scene object
-        Scene scene = new Scene(root, width, height);
-
-        //Setting title to the Stage
-        stage.setTitle("Pong");
-
-        //Adding scene to the stage
-        stage.setScene(scene);
-
-        //Displaying the contents of the stage
-        stage.show();
-
-        ball.start();
+        engine.start();
     }
 
 

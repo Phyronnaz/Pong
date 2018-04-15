@@ -1,6 +1,6 @@
 package pong;
 
-public interface EngineObject
+public interface ScriptObject
 {
     void start();
     void reset();

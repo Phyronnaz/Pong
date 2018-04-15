@@ -1,69 +1,68 @@
 package pong;
 
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.beans.property.DoubleProperty;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
+import static java.lang.Math.abs;
 
-
-public class Racket extends Rectangle
+public class Racket implements ScriptObject
 {
+    protected final DoubleProperty ballHeightProperty;
+    protected final DoubleProperty racketHeightProperty;
+    protected final double racketHeight;
+    protected final double initialRacketHeight;
+    protected final double speed;
 
-    private int racketScore = 0;
-    private TextFlow racketTextFlow;
+    private Timeline timeline;
 
-    public void setRacketText(int score) {
-        this.racketText.setText(String.valueOf(score));
+    public Racket(Engine engine, Ball ball, RacketSide side, double speed)
+    {
+        this.ballHeightProperty = ball.heightProperty();
+        this.racketHeightProperty = engine.getRacketYProperty(side);
+        this.racketHeight = engine.getRacketHeight();
+        this.initialRacketHeight = engine.getWorldHeight() / 2 + racketHeight / 2;
+        this.speed = speed;
+
+        timeline = new Timeline();
+        timeline.setOnFinished(this::next);
+
+        engine.addScriptObject(this);
     }
 
-    private Text racketText;
-
-    public Racket(int width, boolean left)
+    protected double nextHeight()
     {
-        super(Parameters.racket_width, Parameters.racket_height);
-
-        this.racketText = new Text("0");
-
-
-        if (left)
-        {
-            setTranslateX(Parameters.racket_width);
-        }
-        else
-        {
-            setTranslateX(width - 2 * Parameters.racket_width);
-        }
+        return initialRacketHeight;
     }
 
-    public void initTextFlow(double x, double y)
+    private void next(ActionEvent e)
     {
-        this.racketTextFlow = new TextFlow(this.racketText);
-        this.racketTextFlow.setLayoutX(x);
-        this.racketTextFlow.setLayoutY(y);
+        final double targetHeight = nextHeight();
+        final double dt = abs((racketHeightProperty.getValue() - targetHeight) / speed);
+
+        Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
+
+        KeyValue heightKeyvalue = new KeyValue(racketHeightProperty, targetHeight);
+        KeyFrame keyframe = new KeyFrame(time, heightKeyvalue);
+
+        timeline.getKeyFrames().add(keyframe);
+        timeline.playFrom(timeline.getCurrentTime());
     }
 
-    public TextFlow getTextFlow()
+    @Override
+    public void start()
     {
-        return this.racketTextFlow;
+        racketHeightProperty.setValue(initialRacketHeight);
+        timeline.play();
     }
 
-    public Text getRacketText()
+    @Override
+    public void reset()
     {
-        return this.racketText;
-    }
-
-    public int getRacketScore()
-    {
-        return racketScore;
-    }
-
-    public void incScore()
-    {
-        racketScore += 1;
-    }
-
-    public boolean isInside(double height)
-    {
-        return getTranslateY() < height && height < getTranslateY() + Parameters.racket_height;
+        timeline.getKeyFrames().clear();
+        racketHeightProperty.setValue(initialRacketHeight);
     }
 }
