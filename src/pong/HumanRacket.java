@@ -1,53 +1,60 @@
-//package pong;
-//
-//import javafx.beans.value.ChangeListener;
-//import javafx.scene.Scene;
-//import javafx.scene.input.KeyEvent;
-//
-//public class HumanRacket extends Racket
-//{
-//
-//    boolean isLeft;
-//
-//    public HumanRacket(int width, boolean left)
-//    {
-//        super(width, left);
-//
-//        System.out.print(left);
-//
-//        isLeft = left;
-//
-//        ChangeListener<Scene> listener = (obs, old, newValue) -> newValue.setOnKeyPressed(this::actionOnKeyPressed);
-//
-//        sceneProperty().addListener(listener);
-//    }
-//
-//    private void actionOnKeyPressed(KeyEvent event)
-//    {
-//        System.out.print("\n");
-//        System.out.print(this.isLeft);
-//        if (this.isLeft)
-//        {
-//            switch (event.getCode())
-//            {
-//                case LEFT:
-//                    setTranslateY(getTranslateY() - Parameters.inputDelta);
-//                    break;
-//                case RIGHT:
-//                    setTranslateY(getTranslateY() + Parameters.inputDelta);
-//                    break;
-//            }
-//        }
-//        else {
-//            switch (event.getCode()) {
-//                case UP:
-//                setTranslateY(getTranslateY() - Parameters.inputDelta);
-//                break;
-//            case DOWN:
-//                setTranslateY(getTranslateY() + Parameters.inputDelta);
-//                break;
-//        }
-//    }
-//}
-//}
-//
+package pong;
+
+import javafx.beans.value.ChangeListener;
+import javafx.geometry.Side;
+import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
+
+public class HumanRacket extends Racket
+{
+    double currentHeight;
+
+    public HumanRacket(Engine engine, Ball ball, RacketSide side, double speed)
+    {
+        super(engine, ball, side, speed);
+        engine.addOnKeyPressed(this::actionOnKeyPressed);
+
+        this.currentHeight = initialRacketHeight;
+    }
+
+    @Override
+    protected double nextHeight()
+    {
+        return currentHeight;
+    }
+
+    private void actionOnKeyPressed(KeyEvent event)
+    {
+        if (side == RacketSide.LEFT)
+        {
+            switch (event.getCode())
+            {
+                case LEFT:
+                    currentHeight += 50;
+                    break;
+                case RIGHT:
+                    currentHeight -= 50;
+                    break;
+            }
+        }
+        else
+        {
+            switch (event.getCode())
+            {
+                case UP:
+                    currentHeight += 50;
+                    break;
+                case DOWN:
+                    currentHeight -= 50;
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void racketReset()
+    {
+        currentHeight = initialRacketHeight;
+    }
+}
+

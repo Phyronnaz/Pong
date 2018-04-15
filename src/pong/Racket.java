@@ -8,19 +8,22 @@ import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.max;
 
 public class Racket implements ScriptObject
 {
-    protected final DoubleProperty ballHeightProperty;
-    protected final DoubleProperty racketHeightProperty;
+    private Timeline timeline;
+    private final DoubleProperty ballHeightProperty;
+    private final DoubleProperty racketHeightProperty;
+
+    protected RacketSide side;
     protected final double racketHeight;
     protected final double initialRacketHeight;
     protected final double speed;
 
-    private Timeline timeline;
-
     public Racket(Engine engine, Ball ball, RacketSide side, double speed)
     {
+        this.side = side;
         this.ballHeightProperty = ball.heightProperty();
         this.racketHeightProperty = engine.getRacketYProperty(side);
         this.racketHeight = engine.getRacketHeight();
@@ -40,8 +43,12 @@ public class Racket implements ScriptObject
 
     private void next(ActionEvent e)
     {
-        final double targetHeight = nextHeight();
-        final double dt = abs((racketHeightProperty.getValue() - targetHeight) / speed);
+        double targetHeight = nextHeight();
+        if (Double.isNaN(targetHeight))
+        {
+            targetHeight = getRacketHeight();
+        }
+        final double dt = abs((racketHeightProperty.getValue() - targetHeight) / speed) + 1;
 
         Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
 
@@ -53,16 +60,32 @@ public class Racket implements ScriptObject
     }
 
     @Override
-    public void start()
+    final public void start()
     {
         racketHeightProperty.setValue(initialRacketHeight);
         timeline.play();
     }
 
     @Override
-    public void reset()
+    final public void reset()
     {
+        racketReset();
         timeline.getKeyFrames().clear();
         racketHeightProperty.setValue(initialRacketHeight);
+    }
+
+    public double getBallHeight()
+    {
+        return ballHeightProperty.get();
+    }
+
+    public double getRacketHeight()
+    {
+        return racketHeightProperty.get();
+    }
+
+    public void racketReset()
+    {
+
     }
 }

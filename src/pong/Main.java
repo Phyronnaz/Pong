@@ -23,19 +23,22 @@ public class Main extends Application
     @Override
     public void start(Stage stage) throws Exception
     {
-        Engine engine = new Engine(stage, width, height, 50, 50, 10, 49);
+        Engine engine = new Engine(stage, width, height, 50, 200, 10, 9);
         World world = new World(engine);
 
         Ball ball = new Ball(engine, world, new Vector2D(1, 1), new Vector2D(500, 250));
         new CircleBallRender(engine, ball);
 
-//        Segment segment0 = new Segment(new Vector2D(200, 200), new Vector2D(500, 500));
-//        world.addStaticCollision(segment0);
-//
-//        new SegmentRender(engine, segment0);
+        Segment segment0 = new Segment(new Vector2D(200, 200), new Vector2D(400, 400));
+        world.addStaticCollision(segment0);
+        new SegmentRender(engine, segment0);
 
-        new AIRacket(engine, ball, RacketSide.LEFT, 1);
-        new AIRacket(engine, ball, RacketSide.RIGHT, 1);
+        Segment segment1 = new Segment(new Vector2D(500, 200), new Vector2D(400, 100));
+        world.addStaticCollision(segment1);
+        new SegmentRender(engine, segment1);
+
+        new AIRacket(engine, ball, RacketSide.LEFT, 10);
+        new HumanRacket(engine, ball, RacketSide.RIGHT, 0.5);
 
         engine.start();
     }
