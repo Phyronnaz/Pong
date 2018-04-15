@@ -13,9 +13,9 @@ import javafx.util.Duration;
 public class CircleBallRender extends Circle implements BallRender
 {
     private final Engine engine;
-    private Timeline timeline;
+    private final Timeline timeline;
     private Runnable onFinished;
-    private DoubleProperty heigthProperty;
+    private final DoubleProperty heigthProperty;
 
     public CircleBallRender(Engine engine, Ball ball)
     {

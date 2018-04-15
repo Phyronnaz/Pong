@@ -8,15 +8,14 @@ import javafx.event.ActionEvent;
 import javafx.util.Duration;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.max;
 
 public class Racket implements ScriptObject
 {
-    private Timeline timeline;
+    private final Timeline timeline;
     private final DoubleProperty ballHeightProperty;
     private final DoubleProperty racketHeightProperty;
 
-    protected RacketSide side;
+    protected final RacketSide side;
     protected final double racketHeight;
     protected final double initialRacketHeight;
     protected final double speed;

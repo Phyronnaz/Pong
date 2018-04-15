@@ -4,19 +4,13 @@ import java.util.Vector;
 
 public class World
 {
-    private Vector<StaticCollision> staticCollisions = new Vector<StaticCollision>();
-
-    private final double width;
-    private final double height;
+    private final Vector<StaticCollision> staticCollisions = new Vector<>();
 
     private final Borders borders;
 
     public World(Engine engine)
     {
-        this.width = engine.getWorldWidth();
-        this.height = engine.getWorldHeight();
-
-        this.borders = new Borders(width, height);
+        this.borders = new Borders(engine.getWorldWidth(), engine.getWorldHeight());
     }
 
     public void addStaticCollision(StaticCollision staticCollision)

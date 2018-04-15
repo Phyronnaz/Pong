@@ -4,7 +4,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -27,22 +26,22 @@ public class Engine
     private final double ballRadius;
 
     private final Group group;
-    private Scene scene;
 
-    private Rectangle leftRacket;
-    private Rectangle rightRacket;
+    private final Rectangle leftRacket;
+    private final Rectangle rightRacket;
 
-    private DoubleProperty leftRacketYProperty;
-    private DoubleProperty rightRacketYProperty;
+    private final DoubleProperty leftRacketYProperty;
+    private final DoubleProperty rightRacketYProperty;
 
-    private Vector<ScriptObject> scriptObjects = new Vector<>();
+    private final Vector<ScriptObject> scriptObjects = new Vector<>();
 
-    private IntegerProperty leftScore;
-    private IntegerProperty rightScore;
+    private final IntegerProperty leftScore;
+    private final IntegerProperty rightScore;
 
-    private Text scoresText;
+    private final Text scoresText;
 
-    private Vector<EventHandler<? super KeyEvent>> onKeyPressedBinds = new Vector<>();
+    private final Vector<EventHandler<? super KeyEvent>> onKeyPressedBinds = new Vector<>();
+    private final Vector<EventHandler<? super KeyEvent>> onKeyReleasedBinds = new Vector<>();
 
     public Engine(Stage stage, double windowWidth, double windowHeight, double racketWidth, double racketHeight, double racketDistanceToWall, double ballRadius)
     {
@@ -131,8 +130,9 @@ public class Engine
 
     public void start()
     {
-        this.scene = new Scene(group, windowWidth, windowHeight);
+        Scene scene = new Scene(group, windowWidth, windowHeight);
         scene.setOnKeyPressed(this::actionOnKeyPressed);
+        scene.setOnKeyReleased(this::actionOnKeyReleased);
 
         //Setting title to the Stage
         stage.setTitle("Pong");
@@ -154,9 +154,22 @@ public class Engine
         onKeyPressedBinds.add(value);
     }
 
+    public void addOnKeyReleased(EventHandler<? super KeyEvent> value)
+    {
+        onKeyReleasedBinds.add(value);
+    }
+
     private void actionOnKeyPressed(KeyEvent event)
     {
         for (EventHandler<? super KeyEvent> eventHandler : onKeyPressedBinds)
+        {
+            eventHandler.handle(event);
+        }
+    }
+
+    private void actionOnKeyReleased(KeyEvent event)
+    {
+        for (EventHandler<? super KeyEvent> eventHandler : onKeyReleasedBinds)
         {
             eventHandler.handle(event);
         }
@@ -213,6 +226,12 @@ public class Engine
         for (ScriptObject scriptObject : scriptObjects)
         {
             scriptObject.reset();
+        }
+        try
+        {
+            Thread.sleep(1000);
+        } catch (InterruptedException e)
+        {
         }
     }
 
