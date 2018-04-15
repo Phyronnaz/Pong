@@ -93,7 +93,7 @@ public class Engine
                 }
         );
 
-        this.scoresText = new Text(windowWidth / 2, 25, "");
+        this.scoresText = new Text((windowWidth / 2) - 25, 40, ""); // 25 is the empirical text width
         this.scoresText.setScaleX(5);
         this.scoresText.setScaleY(5);
         this.scoresText.setScaleZ(5);

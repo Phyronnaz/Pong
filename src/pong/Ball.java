@@ -53,8 +53,8 @@ public class Ball implements ScriptObject
     public void reset()
     {
         ballRender.reset();
-        position = initialPosition;
-        speed = initialSpeed;
+        position = initialPosition.addRandomVect(-50, 50, -50, 50);
+        speed = initialSpeed.rotateRandom();
         ballRender.setNewPosition(this.position, 0);
         ballRender.play();
     }

@@ -28,6 +28,11 @@ public class Vector2D
         return new Vector2D(x + other.x, y + other.y);
     }
 
+    public Vector2D addRandomVect(double xMin, double xMax, double yMin, double yMax)
+    {
+        return new Vector2D(x + xMin + Math.random() * (xMax - xMin), y + yMin + Math.random() * (yMax - yMin));
+    }
+
     public Vector2D sub(Vector2D other)
     {
         return new Vector2D(x - other.x, y - other.y);
@@ -36,6 +41,12 @@ public class Vector2D
     public Vector2D mul(double other)
     {
         return new Vector2D(x * other, y * other);
+    }
+
+    public Vector2D rotateRandom()
+    {
+        double angle = Math.random() * 2 * Math.PI;
+        return new Vector2D(x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle));
     }
 
     public double length()
