@@ -8,9 +8,9 @@ public class World
 
     private final Borders borders;
 
-    public World(Engine engine)
+    public World(double width, double height)
     {
-        this.borders = new Borders(engine.getWorldWidth(), engine.getWorldHeight());
+        this.borders = new Borders(width, height);
     }
 
     public void addStaticCollision(StaticCollision staticCollision)

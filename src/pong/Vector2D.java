@@ -1,6 +1,6 @@
 package pong;
 
-import static java.lang.Math.*;
+import static java.lang.Math.sqrt;
 
 public class Vector2D
 {
@@ -28,7 +28,7 @@ public class Vector2D
         return new Vector2D(x + other.x, y + other.y);
     }
 
-    public Vector2D addRandomVect(double xMin, double xMax, double yMin, double yMax)
+    public Vector2D randomTranslate(double xMin, double xMax, double yMin, double yMax)
     {
         return new Vector2D(x + xMin + Math.random() * (xMax - xMin), y + yMin + Math.random() * (yMax - yMin));
     }
@@ -43,7 +43,7 @@ public class Vector2D
         return new Vector2D(x * other, y * other);
     }
 
-    public Vector2D rotateRandom()
+    public Vector2D randomRotate()
     {
         double angle = Math.random() * 2 * Math.PI;
         return new Vector2D(x * Math.cos(angle) - y * Math.sin(angle), x * Math.sin(angle) + y * Math.cos(angle));

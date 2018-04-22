@@ -1,39 +1,85 @@
 package pong;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.event.ActionEvent;
+import javafx.util.Duration;
 
-public class Ball implements ScriptObject
+public class Ball implements GameObject
 {
-    private final World world;
     private final Engine engine;
 
     private final double radius;
     private final Vector2D initialSpeed;
     private final Vector2D initialPosition;
+    private final Timeline timeline;
 
-    private BallRender ballRender;
-
-    private Vector2D speed;
-    private Vector2D position;
-
-    public Ball(Engine engine, World world, Vector2D speed, Vector2D position)
+    public double getSpeedX()
     {
-        this.world = world;
+        return speedX.get();
+    }
+
+    public DoubleProperty speedXProperty()
+    {
+        return speedX;
+    }
+
+    public double getSpeedY()
+    {
+        return speedY.get();
+    }
+
+    public DoubleProperty speedYProperty()
+    {
+        return speedY;
+    }
+
+    public double getPositionX()
+    {
+        return positionX.get();
+    }
+
+    public DoubleProperty positionXProperty()
+    {
+        return positionX;
+    }
+
+    public double getPositionY()
+    {
+        return positionY.get();
+    }
+
+    public DoubleProperty positionYProperty()
+    {
+        return positionY;
+    }
+
+    private DoubleProperty speedX = new SimpleDoubleProperty();
+    private DoubleProperty speedY = new SimpleDoubleProperty();
+    private DoubleProperty positionX = new SimpleDoubleProperty();
+    private DoubleProperty positionY = new SimpleDoubleProperty();
+
+    public Ball(Engine engine, Vector2D speed, Vector2D position)
+    {
         this.engine = engine;
 
         this.radius = engine.getBallRadius();
         this.initialSpeed = speed;
         this.initialPosition = new Vector2D(engine.getWorldWidth() / 2, engine.getWorldHeight() / 2);
 
-        this.speed = speed;
-        this.position = position;
+        this.speedX.setValue(speed.x);
+        this.speedY.setValue(speed.y);
+
+        this.positionX.setValue(position.x);
+        this.positionY.setValue(position.y);
+
+        this.timeline = new Timeline();
+        this.timeline.setOnFinished(this::next);
 
         engine.addScriptObject(this);
-    }
-
-    public void setBallRender(BallRender ballRender)
-    {
-        this.ballRender = ballRender;
     }
 
     public double getRadius()
@@ -44,31 +90,31 @@ public class Ball implements ScriptObject
     @Override
     public void start()
     {
-        ballRender.setOnFinished(this::next);
-        ballRender.setNewPosition(this.position, 0);
-        ballRender.play();
+        timeline.play();
     }
 
     @Override
-    public void reset()
+    public void nextLevel()
     {
-        ballRender.reset();
-        position = initialPosition.addRandomVect(-50, 50, -50, 50);
-        speed = initialSpeed.rotateRandom();
-        ballRender.setNewPosition(this.position, 1000);
-        ballRender.play();
+        timeline.stop();
+        timeline.getKeyFrames().clear();
+
+        Vector2D newPosition = initialPosition.randomTranslate(-50, 50, -50, 50);
+        Vector2D newSpeed = initialSpeed.randomRotate();
+
+        positionXProperty().setValue(newPosition.x);
+        positionYProperty().setValue(newPosition.y);
+
+        speedXProperty().setValue(newSpeed.x);
+        speedYProperty().setValue(newSpeed.y);
     }
 
-    public DoubleProperty heightProperty()
+    private void next(ActionEvent e)
     {
-        return ballRender.heightProperty();
-    }
+        Vector2D position = new Vector2D(getPositionX(), getPositionY());
+        Vector2D speed = new Vector2D(getSpeedX(), getSpeedY());
 
-    private void next()
-    {
-        Vector2D oldPosition = position;
-
-        CollisionPoint collisionPoint = world.getClosestIntersection(position, speed, radius);
+        CollisionPoint collisionPoint = engine.getWorld().getClosestIntersection(position, speed, radius);
         assert collisionPoint != null;
 
         final double dt = collisionPoint.getDt();
@@ -76,8 +122,16 @@ public class Ball implements ScriptObject
         position = position.add(speed.mul(dt));
         speed = collisionPoint.getNewSpeed();
 
-        ballRender.setNewPosition(position, dt);
+        KeyValue keyValuePositionX = new KeyValue(positionXProperty(), position.x);
+        KeyValue keyValuePositionY = new KeyValue(positionYProperty(), position.y);
 
-        engine.checkIfWon(oldPosition);
+        KeyValue keyValueSpeedX = new KeyValue(speedXProperty(), speed.x);
+        KeyValue keyValueSpeedY = new KeyValue(speedYProperty(), speed.y);
+
+        Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
+
+        KeyFrame keyFrame = new KeyFrame(time, keyValuePositionX, keyValuePositionY, keyValueSpeedX, keyValueSpeedY);
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.playFrom(timeline.getCurrentTime());
     }
 }

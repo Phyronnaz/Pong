@@ -9,7 +9,7 @@ import javafx.util.Duration;
 
 import static java.lang.Math.abs;
 
-public class Racket implements ScriptObject
+public class Racket implements GameObject
 {
     private final Timeline timeline;
     private final DoubleProperty ballHeightProperty;
@@ -66,7 +66,7 @@ public class Racket implements ScriptObject
     }
 
     @Override
-    final public void reset()
+    final public void nextLevel()
     {
         racketReset();
         timeline.getKeyFrames().clear();
