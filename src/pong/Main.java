@@ -13,6 +13,7 @@ public class Main extends Application
         Engine engine = new Engine(stage, width, height, 20, 200, 10, 19);
         World world = new World(engine);
 
+        //TODO: Utiliser les coordonnées du jeu et pas celle de l'écran.
         Ball ball = new Ball(engine, world, new Vector2D(1, 1), new Vector2D(width / 2, height / 2));
         new CircleBallRender(engine, ball);
 

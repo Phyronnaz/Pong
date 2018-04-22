@@ -34,7 +34,7 @@ public class Segment implements StaticCollision
         final double dt = Vector2D.dotProduct(start.sub(pointOnCircle), n) / speedDotN;
 
         if(dt <= 0)
-            return new CollisionPoint(Double.POSITIVE_INFINITY, new Vector2D(0,0));
+            return intersectWithPoints(position, speed, radius);
 
         final Vector2D startToIntersection = speed.mul(dt).add(pointOnCircle).sub(start);
         final double s2iDots2e = Vector2D.dotProduct(startToIntersection, startToEnd);
@@ -62,16 +62,14 @@ public class Segment implements StaticCollision
             if(delta < 10e-7)
                 continue;
 
-            final double dt1 = (-b-Math.sqrt(delta))/2/a;
+            final double dt1 = (-b-Math.sqrt(delta))/(2*a);
             if(dt1 < 10e-7)
                 continue;
 
             if(dt1 < dt) {
                 dt = dt1;
                 final Vector2D finalPosition = speed.mul(dt).add(position);
-                final Vector2D u = finalPosition.sub(point);
-                final Vector2D v = u.getOrthogonal();
-
+                final Vector2D u = finalPosition.sub(point).getNormal(); final Vector2D v = u.getOrthogonal();
                 newSpeed = u.mul(-Vector2D.dotProduct(u,speed)).add(v.mul(Vector2D.dotProduct(v, speed)));
             }
         }
