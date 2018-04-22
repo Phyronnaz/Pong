@@ -59,4 +59,8 @@ public class Vector2D
         double size = length();
         return new Vector2D(x / size, y / size);
     }
+
+    public Vector2D getOrthogonal() {
+        return new Vector2D(-y, x);
+    }
 }

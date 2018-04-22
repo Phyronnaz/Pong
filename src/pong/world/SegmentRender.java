@@ -1,6 +1,8 @@
-package pong;
+package pong.world;
 
 import javafx.scene.shape.Line;
+import pong.engine.Engine;
+import pong.Vector2D;
 
 public class SegmentRender extends Line
 {

@@ -1,0 +1,68 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{fullpage}%
+\usepackage[T1]{fontenc}%
+\usepackage[utf8]{inputenc}%
+\usepackage[main=francais,english]{babel}%
+\usepackage{graphicx}%
+\usepackage{url}%
+\usepackage{abstract}%
+\usepackage{listings}%
+\usepackage{tikz}%
+\usepackage{amsmath}%
+\usepackage{amssymb}%
+\usepackage{amsfonts}%
+\usepackage{mathtools}%
+\usepackage{amsthm}%
+\usepackage{array}%
+\usepackage{csquotes}%
+\usepackage{mathpazo}%
+\usepackage{subfig}%
+\usepackage[backend=biber]{biblatex}%
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}%
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}%
+
+\renewcommand\qedsymbol{$\blacksquare$}%
+
+\theoremstyle{definition}
+
+\newtheorem{defi}{Définition}
+\newtheorem*{defi*}{Définition}
+\newtheorem{theo}{Théorème}
+\newtheorem*{theo*}{Théorème}
+\newtheorem{exem}{Exemple}
+\newtheorem*{exem*}{Exemple}
+\newtheorem{prop}{Proposition}
+\newtheorem*{prop*}{Proposition}
+\newtheorem{coro}{Corollaire}
+\newtheorem*{coro*}{Corollaire}
+\newtheorem{lemm}{Lemme}
+\newtheorem*{lemm*}{Lemme}
+
+\bibliography{papers}% The name of your .bib file
+
+\parskip=0.5\baselineskip
+
+\lstset{%
+	basicstyle= \sffamily,%
+	columns=fullflexible,%
+	frame=lb,%
+	frameround=fftf,%
+	language=C,%
+	numbers=left,%
+}%
+
+%
+\begin{document}
+%
+\title{PROG2 : Projet \lstinline{PONG}}
+%
+\author{Tom Bachard\and Guillaume Barbier\and Victor Careil}
+%
+\date{\today}
+%
+\maketitle
+%
+
+\end{document}

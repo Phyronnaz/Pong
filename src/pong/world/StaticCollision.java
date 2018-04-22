@@ -1,4 +1,6 @@
-package pong;
+package pong.world;
+
+import pong.Vector2D;
 
 public interface StaticCollision
 {

@@ -1,4 +1,4 @@
-package pong;
+package pong.engine;
 
 public enum RacketSide
 {
