@@ -1,4 +1,4 @@
-package pong;
+package pong.core;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;

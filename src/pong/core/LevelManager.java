@@ -1,4 +1,4 @@
-package pong;
+package pong.core;
 
 import javafx.scene.Group;
 import javafx.scene.Node;

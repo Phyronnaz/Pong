@@ -1,6 +1,4 @@
-package pong;
-
-import pong.Vector2D;
+package pong.core;
 
 public class CollisionPoint
 {

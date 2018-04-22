@@ -1,6 +1,8 @@
-package pong;
+package pong.levels;
 
 import javafx.scene.Node;
+import pong.core.*;
+import pong.render.SegmentRender;
 
 import java.util.Vector;
 

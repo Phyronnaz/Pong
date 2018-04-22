@@ -1,4 +1,4 @@
-package pong;
+package pong.core;
 
 import static java.lang.Math.sqrt;
 

@@ -1,4 +1,4 @@
-package pong;
+package pong.core;
 
 public class Borders implements StaticCollision
 {

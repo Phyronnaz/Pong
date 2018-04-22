@@ -1,6 +1,10 @@
-package pong;
+package pong.rackets;
 
 import javafx.beans.property.DoubleProperty;
+import pong.core.Ball;
+import pong.core.Engine;
+import pong.core.Racket;
+import pong.core.RacketSide;
 
 import static com.sun.javafx.util.Utils.clamp;
 import static java.lang.Math.abs;

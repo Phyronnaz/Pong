@@ -1,4 +1,8 @@
-package pong;
+package pong.levels;
+
+import pong.core.CollisionPoint;
+import pong.core.StaticCollision;
+import pong.core.Vector2D;
 
 public class Segment implements StaticCollision
 {

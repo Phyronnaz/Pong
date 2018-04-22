@@ -1,4 +1,4 @@
-package pong;
+package pong.core;
 
 import java.util.Vector;
 

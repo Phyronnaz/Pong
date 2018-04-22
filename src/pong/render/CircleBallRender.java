@@ -1,7 +1,10 @@
-package pong;
+package pong.render;
 
 import javafx.scene.Node;
 import javafx.scene.shape.Circle;
+import pong.core.Ball;
+import pong.core.Engine;
+import pong.core.GameObject;
 
 public class CircleBallRender extends GameObject
 {

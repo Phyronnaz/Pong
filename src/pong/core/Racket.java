@@ -1,4 +1,4 @@
-package pong;
+package pong.core;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

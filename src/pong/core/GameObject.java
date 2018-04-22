@@ -1,4 +1,4 @@
-package pong;
+package pong.core;
 
 import javafx.scene.Node;
 
@@ -9,23 +9,23 @@ public abstract class GameObject
         engine.addGameObject(this);
     }
 
-    void start()
+    public void start()
     {
     }
 
-    void reset()
+    public void reset()
     {
     }
 
-    void nextLevel()
+    public void nextLevel()
     {
     }
 
-    void stop()
+    public void stop()
     {
     }
 
-    Node getRender()
+    public Node getRender()
     {
         return null;
     }

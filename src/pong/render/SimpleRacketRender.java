@@ -1,7 +1,11 @@
-package pong;
+package pong.render;
 
 import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
+import pong.core.Racket;
+import pong.core.RacketSide;
+import pong.core.Engine;
+import pong.core.GameObject;
 
 public class SimpleRacketRender extends GameObject
 {
