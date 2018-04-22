@@ -11,16 +11,18 @@ public class Main extends Application
         int width = 1000;
         int height = 500;
         Engine engine = new Engine(stage, width, height, 20, 200, 10, 19);
-        World world = new World(engine);
 
-        Ball ball = new Ball(engine, world, new Vector2D(0.5, 0.5), new Vector2D(500, 250));
+        LevelManager levelManager = new LevelManager(engine, new Level0(engine), new Level1(engine));
+
+        Ball ball = new Ball(engine, levelManager);
 
         new CircleBallRender(engine, ball);
 
-        world = Level.createLevel(world, engine, 1);
+        Racket racketLeft = new AIRacket(engine, ball, RacketSide.LEFT, 0.5);
+        Racket racketRight = new HumanRacket(engine, RacketSide.RIGHT, 2);
 
-        new AIRacket(engine, ball, RacketSide.LEFT, 0.5);
-        new HumanRacket(engine, ball, RacketSide.RIGHT, 2);
+        new SimpleRacketRender(engine, racketLeft);
+        new SimpleRacketRender(engine, racketRight);
 
         engine.start();
     }

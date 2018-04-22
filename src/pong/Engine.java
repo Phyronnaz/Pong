@@ -6,6 +6,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableNumberValue;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -23,36 +24,14 @@ public class Engine
 {
     private final Stage stage;
 
-    public double getWindowWidth()
-    {
-        return windowWidth;
-    }
-
-    public double getWindowHeight()
-    {
-        return windowHeight;
-    }
-
     private final double windowWidth;
     private final double windowHeight;
-
-    public double getRacketWidth()
-    {
-        return racketWidth;
-    }
 
     private final double racketWidth;
     private final double racketHeight;
 
-    public double getRacketDistanceToWall()
-    {
-        return racketDistanceToWall;
-    }
-
     private final double racketDistanceToWall;
     private final double ballRadius;
-
-    private final Group group;
 
     private final DoubleProperty leftRacketY;
     private final DoubleProperty rightRacketY;
@@ -67,27 +46,7 @@ public class Engine
     private final Vector<EventHandler<? super KeyEvent>> onKeyPressedBinds = new Vector<>();
     private final Vector<EventHandler<? super KeyEvent>> onKeyReleasedBinds = new Vector<>();
 
-    public World getWorld()
-    {
-        return world;
-    }
-
-    public void setWorld(World world)
-    {
-        this.world = world;
-    }
-
     private World world;
-
-    public Ball getBall()
-    {
-        return ball;
-    }
-
-    public void setBall(Ball ball)
-    {
-        this.ball = ball;
-    }
 
     private Ball ball;
 
@@ -101,40 +60,29 @@ public class Engine
         this.racketDistanceToWall = racketDistanceToWall;
         this.ballRadius = ballRadius;
 
-        this.group = new Group();
-
         this.leftRacketY = new SimpleDoubleProperty();
         this.rightRacketY = new SimpleDoubleProperty();
 
         this.leftScore = new SimpleIntegerProperty();
-        this.leftScore.addListener(
-                (observable, oldValue, newValue) ->
-                {
-                    updateScores();
-                }
-        );
         this.rightScore = new SimpleIntegerProperty();
-        this.rightScore.addListener(
-                (observable, oldValue, newValue) ->
-                {
-                    updateScores();
-                }
-        );
+
+        ChangeListener<Number> listener = (obs, o, n) ->
+        {
+            if (n.intValue() == 5)
+            {
+                nextLevel();
+            }
+        };
+        this.leftScore.addListener(listener);
+        this.rightScore.addListener(listener);
 
         this.scoresText = new Text((windowWidth / 2) - 18, 35, ""); // 18 is the empirical text width
         this.scoresText.setScaleX(5);
         this.scoresText.setScaleY(5);
         this.scoresText.setScaleZ(5);
-        this.scoresText.textProperty().bind(Bindings.createStringBinding())
-        addRenderObject(scoresText);
-        updateScores();
+        this.scoresText.textProperty().bind(Bindings.concat(leftScore, "   -   ", rightScore));
 
         this.world = null;
-    }
-
-    public void updateScores()
-    {
-        scoresText.setText(leftScore.getValue() + "   -   " + rightScore.getValue());
     }
 
     public DoubleProperty getRacketYProperty(RacketSide side)
@@ -149,27 +97,18 @@ public class Engine
         }
     }
 
-    public void addRenderObject(Node object)
-    {
-        group.getChildren().add(object);
-    }
-
-    public void addScriptObject(GameObject object)
+    public void addGameObject(GameObject object)
     {
         gameObjects.add(object);
     }
 
     public void start()
     {
-        Scene scene = new Scene(group, windowWidth, windowHeight);
-        scene.setOnKeyPressed(this::actionOnKeyPressed);
-        scene.setOnKeyReleased(this::actionOnKeyReleased);
-
         //Setting title to the Stage
         stage.setTitle("Pong");
 
         //Adding scene to the stage
-        stage.setScene(scene);
+        stage.setScene(createScene());
 
         //Displaying the contents of the stage
         stage.show();
@@ -178,6 +117,58 @@ public class Engine
         {
             object.start();
         }
+    }
+
+    private void nextLevel()
+    {
+        for (GameObject gameObject : gameObjects)
+        {
+            gameObject.nextLevel();
+        }
+        leftScore.setValue(0);
+        rightScore.setValue(0);
+    }
+
+    private void reset()
+    {
+
+        for (GameObject gameObject : gameObjects)
+        {
+            gameObject.reset();
+        }
+        stage.setScene(createScene());
+    }
+
+    private Scene createScene()
+    {
+        Group group = new Group(scoresText);
+
+        for (GameObject gameObject : gameObjects)
+        {
+            Node render = gameObject.getRender();
+            if (render != null)
+            {
+                group.getChildren().add(render);
+            }
+        }
+
+        Scene scene = new Scene(group, windowWidth, windowHeight);
+        scene.setOnKeyPressed((KeyEvent event) ->
+        {
+            for (EventHandler<? super KeyEvent> eventHandler : onKeyPressedBinds)
+            {
+                eventHandler.handle(event);
+            }
+        });
+        scene.setOnKeyReleased((KeyEvent event) ->
+        {
+            for (EventHandler<? super KeyEvent> eventHandler : onKeyReleasedBinds)
+            {
+                eventHandler.handle(event);
+            }
+        });
+
+        return scene;
     }
 
     public void addOnKeyPressed(EventHandler<? super KeyEvent> value)
@@ -190,41 +181,15 @@ public class Engine
         onKeyReleasedBinds.add(value);
     }
 
-    private void actionOnKeyPressed(KeyEvent event)
+    private void checkIfWon(double x, double y)
     {
-        for (EventHandler<? super KeyEvent> eventHandler : onKeyPressedBinds)
-        {
-            eventHandler.handle(event);
-        }
-    }
-
-    private void actionOnKeyReleased(KeyEvent event)
-    {
-        for (EventHandler<? super KeyEvent> eventHandler : onKeyReleasedBinds)
-        {
-            eventHandler.handle(event);
-        }
-    }
-
-    public double getWorldWidth()
-    {
-        return windowWidth - 2 * (racketWidth + racketDistanceToWall);
-    }
-
-    public double getWorldHeight()
-    {
-        return windowHeight;
-    }
-
-    public void checkIfWon(Vector2D position)
-    {
-        if (position.x < ballRadius + 1 && !(leftRacketY.getValue() - racketHeight <= position.y && position.y <= leftRacketY.getValue()))
+        if (x < ballRadius + 1 && !(leftRacketY.getValue() - racketHeight <= y && y <= leftRacketY.getValue()))
         {
             System.out.print("Right scores\n");
             rightScore.setValue(rightScore.getValue() + 1);
             reset();
         }
-        else if (getWorldWidth() - ballRadius - 1 < position.x && !(rightRacketY.getValue() - racketHeight <= position.y && position.y <= rightRacketY.getValue()))
+        else if (getWorldWidth() - ballRadius - 1 < x && !(rightRacketY.getValue() - racketHeight <= y && y <= rightRacketY.getValue()))
         {
             System.out.print("Left scores\n");
             leftScore.setValue(leftScore.getValue() + 1);
@@ -247,14 +212,49 @@ public class Engine
         return Bindings.subtract(windowHeight, y);
     }
 
-    public Vector2D getLocalPosition(Vector2D screenPosition)
-    {
-        return new Vector2D(screenPosition.x - racketWidth + racketDistanceToWall, windowHeight - screenPosition.y);
-    }
-
     public double getScreenLength(double length)
     {
         return length;
+    }
+
+    public double getBallRadius()
+    {
+        return ballRadius;
+    }
+
+    public Ball getBall()
+    {
+        return ball;
+    }
+
+    public void setBall(Ball ball)
+    {
+        this.ball = ball;
+
+        ChangeListener<Number> listener = (obs, o, n) -> checkIfWon(ball.getPositionX(), ball.getPositionY());
+
+        ball.positionXProperty().addListener(listener);
+        ball.positionYProperty().addListener(listener);
+    }
+
+    public World getWorld()
+    {
+        return world;
+    }
+
+    public void setWorld(World world)
+    {
+        this.world = world;
+    }
+
+    public double getRacketDistanceToWall()
+    {
+        return racketDistanceToWall;
+    }
+
+    public double getRacketWidth()
+    {
+        return racketWidth;
     }
 
     public double getRacketHeight()
@@ -262,22 +262,23 @@ public class Engine
         return racketHeight;
     }
 
-    public void reset()
+    public double getWindowWidth()
     {
-        for (GameObject gameObject : gameObjects)
-        {
-            gameObject.nextLevel();
-        }
-        try
-        {
-            Thread.sleep(1000);
-        } catch (InterruptedException e)
-        {
-        }
+        return windowWidth;
     }
 
-    public double getBallRadius()
+    public double getWindowHeight()
     {
-        return ballRadius;
+        return windowHeight;
+    }
+
+    public double getWorldWidth()
+    {
+        return windowWidth - 2 * (racketWidth + racketDistanceToWall);
+    }
+
+    public double getWorldHeight()
+    {
+        return windowHeight;
     }
 }

@@ -8,6 +8,8 @@ public class Level1 implements Level
 {
     private final World world;
     private final Vector<Node> renderObjects = new Vector<>();
+    private final Vector2D initialPosition;
+    private final Vector2D initialSpeed;
 
     public Level1(Engine engine)
     {
@@ -50,6 +52,9 @@ public class Level1 implements Level
         renderObjects.add(new SegmentRender(engine, segment2_5));
         renderObjects.add(new SegmentRender(engine, segment2_6));
         renderObjects.add(new SegmentRender(engine, segment2_7));
+
+        initialPosition = new Vector2D(halfWidth, halfHeight);
+        initialSpeed = new Vector2D(1, 1);
     }
 
     @Override
@@ -62,5 +67,17 @@ public class Level1 implements Level
     public Vector<Node> getRenderObjects()
     {
         return renderObjects;
+    }
+
+    @Override
+    public Vector2D getInitialPosition()
+    {
+        return initialPosition;
+    }
+
+    @Override
+    public Vector2D getInitialSpeed()
+    {
+        return initialSpeed;
     }
 }

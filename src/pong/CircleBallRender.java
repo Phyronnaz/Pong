@@ -1,16 +1,25 @@
 package pong;
 
+import javafx.scene.Node;
 import javafx.scene.shape.Circle;
 
-public class CircleBallRender extends Circle
+public class CircleBallRender extends GameObject
 {
+    private final Circle circle;
+
     public CircleBallRender(Engine engine, Ball ball)
     {
-        super(engine.getScreenLength(ball.getRadius()));
+        super(engine);
 
-        engine.addRenderObject(this);
+        this.circle = new Circle(engine.getScreenLength(ball.getRadius()));
 
-        translateXProperty().bind(engine.getScreenPositionXBinding(ball.positionXProperty()));
-        translateYProperty().bind(engine.getScreenPositionYBinding(ball.positionYProperty()));
+        this.circle.translateXProperty().bind(engine.getScreenPositionXBinding(ball.positionXProperty()));
+        this.circle.translateYProperty().bind(engine.getScreenPositionYBinding(ball.positionYProperty()));
+    }
+
+    @Override
+    public Node getRender()
+    {
+        return circle;
     }
 }

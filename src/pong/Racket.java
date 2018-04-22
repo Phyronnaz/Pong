@@ -5,39 +5,37 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.util.Duration;
 
 import static java.lang.Math.abs;
 
-public class Racket implements GameObject
+public abstract class Racket extends GameObject
 {
     private final Timeline timeline;
-    private final DoubleProperty ballHeightProperty;
-    private final DoubleProperty racketHeightProperty;
+    private final DoubleProperty racketY;
+    private final RacketSide side;
+    private final double racketHeight;
+    private final double initialRacketY;
+    private final double speed;
 
-    protected final RacketSide side;
-    protected final double racketHeight;
-    protected final double initialRacketHeight;
-    protected final double speed;
-
-    public Racket(Engine engine, Ball ball, RacketSide side, double speed)
+    public Racket(Engine engine, RacketSide side, double speed)
     {
+        super(engine);
+
         this.side = side;
-        this.ballHeightProperty = ball.heightProperty();
-        this.racketHeightProperty = engine.getRacketYProperty(side);
+        this.racketY = engine.getRacketYProperty(side);
         this.racketHeight = engine.getRacketHeight();
-        this.initialRacketHeight = engine.getWorldHeight() / 2 + racketHeight / 2;
+        this.initialRacketY = engine.getWorldHeight() / 2 + racketHeight / 2;
         this.speed = speed;
 
         timeline = new Timeline();
         timeline.setOnFinished(this::next);
-
-        engine.addScriptObject(this);
     }
 
     protected double nextHeight()
     {
-        return initialRacketHeight;
+        return initialRacketY;
     }
 
     private void next(ActionEvent e)
@@ -45,13 +43,13 @@ public class Racket implements GameObject
         double targetHeight = nextHeight();
         if (Double.isNaN(targetHeight))
         {
-            targetHeight = getRacketHeight();
+            targetHeight = getRacketY();
         }
-        final double dt = abs((racketHeightProperty.getValue() - targetHeight) / speed) + 1;
+        final double dt = abs((racketY.getValue() - targetHeight) / speed) + 1;
 
         Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
 
-        KeyValue heightKeyvalue = new KeyValue(racketHeightProperty, targetHeight);
+        KeyValue heightKeyvalue = new KeyValue(racketY, targetHeight);
         KeyFrame keyframe = new KeyFrame(time, heightKeyvalue);
 
         timeline.getKeyFrames().add(keyframe);
@@ -59,32 +57,41 @@ public class Racket implements GameObject
     }
 
     @Override
-    final public void start()
+    public void start()
     {
-        racketHeightProperty.setValue(initialRacketHeight);
+        racketY.setValue(initialRacketY);
         timeline.play();
     }
 
     @Override
-    final public void nextLevel()
+    public void reset()
     {
-        racketReset();
         timeline.getKeyFrames().clear();
-        racketHeightProperty.setValue(initialRacketHeight);
+        racketY.setValue(initialRacketY);
     }
 
-    public double getBallHeight()
+    public RacketSide getSide()
     {
-        return ballHeightProperty.get();
+        return side;
     }
 
     public double getRacketHeight()
     {
-        return racketHeightProperty.get();
+        return racketHeight;
     }
 
-    public void racketReset()
+    public double getInitialRacketY()
     {
+        return initialRacketY;
+    }
 
+    public double getSpeed()
+    {
+        return speed;
+    }
+
+    public double getRacketY()
+    {
+        return racketY.get();
     }
 }

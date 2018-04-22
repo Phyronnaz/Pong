@@ -7,23 +7,22 @@ import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
 
-import javax.swing.plaf.synth.SynthEditorPaneUI;
-
 public class HumanRacket extends Racket
 {
-    private double currentHeight;
+    private double currentY;
     private final Timeline timeline;
     private boolean isDownPressed = false;
     private boolean isUpPressed = false;
 
-    public HumanRacket(Engine engine, Ball ball, RacketSide side, double speed)
+    public HumanRacket(Engine engine, RacketSide side, double speed)
     {
-        super(engine, ball, side, speed);
+        super(engine, side, speed);
         engine.addOnKeyPressed(this::actionOnKeyPressed);
         engine.addOnKeyReleased(this::actionOnKeyReleased);
 
-        this.currentHeight = initialRacketHeight;
+        this.currentY = getInitialRacketY();
         this.timeline = new Timeline();
+
         timeline.setOnFinished(this::onFinished);
         timeline.play();
     }
@@ -32,11 +31,11 @@ public class HumanRacket extends Racket
     {
         if (isDownPressed)
         {
-            currentHeight -= 5 * speed;
+            currentY -= 5 * getSpeed();
         }
         if (isUpPressed)
         {
-            currentHeight += 5 * speed;
+            currentY += 5 * getSpeed();
         }
 
         Duration time = timeline.getCurrentTime().add(Duration.millis(5));
@@ -50,12 +49,12 @@ public class HumanRacket extends Racket
     @Override
     protected double nextHeight()
     {
-        return currentHeight;
+        return currentY;
     }
 
     private void actionOnKeyPressed(KeyEvent event)
     {
-        if (side == RacketSide.LEFT)
+        if (getSide() == RacketSide.LEFT)
         {
             switch (event.getCode())
             {
@@ -83,7 +82,7 @@ public class HumanRacket extends Racket
 
     private void actionOnKeyReleased(KeyEvent event)
     {
-        if (side == RacketSide.LEFT)
+        if (getSide() == RacketSide.LEFT)
         {
             switch (event.getCode())
             {
@@ -110,9 +109,10 @@ public class HumanRacket extends Racket
     }
 
     @Override
-    public void racketReset()
+    public void reset()
     {
-        currentHeight = initialRacketHeight;
+        currentY = getInitialRacketY();
+        super.reset();
     }
 }
 

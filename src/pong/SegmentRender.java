@@ -8,8 +8,6 @@ public class SegmentRender extends Line
     {
         super();
 
-        engine.addRenderObject(this);
-
         Vector2D screenStart = engine.getScreenPosition(segment.getStart());
         Vector2D screenEnd = engine.getScreenPosition(segment.getEnd());
 

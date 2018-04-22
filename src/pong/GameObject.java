@@ -2,9 +2,27 @@ package pong;
 
 import javafx.scene.Node;
 
-public interface GameObject
+public abstract class GameObject
 {
-    void start();
-    void nextLevel();
-    Node getRender();
+    public GameObject(Engine engine)
+    {
+        engine.addGameObject(this);
+    }
+
+    void start()
+    {
+    }
+
+    void reset()
+    {
+    }
+
+    void nextLevel()
+    {
+    }
+
+    Node getRender()
+    {
+        return null;
+    }
 }

@@ -9,4 +9,8 @@ public interface Level
     World getWorld();
 
     Vector<Node> getRenderObjects();
+
+    Vector2D getInitialPosition();
+
+    Vector2D getInitialSpeed();
 }

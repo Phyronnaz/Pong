@@ -6,15 +6,15 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.util.Duration;
 
-public class Ball implements GameObject
+public class Ball extends GameObject
 {
     private final Engine engine;
 
     private final double radius;
-    private final Vector2D initialSpeed;
-    private final Vector2D initialPosition;
+    private final LevelManager levelManager;
     private final Timeline timeline;
 
     public double getSpeedX()
@@ -62,13 +62,17 @@ public class Ball implements GameObject
     private DoubleProperty positionX = new SimpleDoubleProperty();
     private DoubleProperty positionY = new SimpleDoubleProperty();
 
-    public Ball(Engine engine, Vector2D speed, Vector2D position)
+    public Ball(Engine engine, LevelManager levelManager)
     {
+        super(engine);
+
         this.engine = engine;
 
         this.radius = engine.getBallRadius();
-        this.initialSpeed = speed;
-        this.initialPosition = new Vector2D(engine.getWorldWidth() / 2, engine.getWorldHeight() / 2);
+        this.levelManager = levelManager;
+
+        Vector2D speed = levelManager.getInitialSpeed();
+        Vector2D position = levelManager.getInitialPosition();
 
         this.speedX.setValue(speed.x);
         this.speedY.setValue(speed.y);
@@ -79,7 +83,7 @@ public class Ball implements GameObject
         this.timeline = new Timeline();
         this.timeline.setOnFinished(this::next);
 
-        engine.addScriptObject(this);
+        engine.setBall(this);
     }
 
     public double getRadius()
@@ -94,19 +98,21 @@ public class Ball implements GameObject
     }
 
     @Override
-    public void nextLevel()
+    public void reset()
     {
         timeline.stop();
         timeline.getKeyFrames().clear();
 
-        Vector2D newPosition = initialPosition.randomTranslate(-50, 50, -50, 50);
-        Vector2D newSpeed = initialSpeed.randomRotate();
+        Vector2D newPosition = levelManager.getInitialPosition();
+        Vector2D newSpeed = levelManager.getInitialSpeed();
 
         positionXProperty().setValue(newPosition.x);
         positionYProperty().setValue(newPosition.y);
 
         speedXProperty().setValue(newSpeed.x);
         speedYProperty().setValue(newSpeed.y);
+
+        timeline.play();
     }
 
     private void next(ActionEvent e)

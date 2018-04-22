@@ -8,6 +8,8 @@ public class Level0 implements Level
 {
     private final World world;
     private final Vector<Node> renderObjects = new Vector<>();
+    private final Vector2D initialPosition;
+    private final Vector2D initialSpeed;
 
     public Level0(Engine engine)
     {
@@ -30,6 +32,9 @@ public class Level0 implements Level
         Segment segment1_2 = new Segment(new Vector2D(halfWidth, (height * 9) / 12), new Vector2D(halfWidth, (height * 11) / 12));
         world.addStaticCollision(segment1_2);
         renderObjects.add(new SegmentRender(engine, segment1_2));
+
+        initialPosition = new Vector2D(halfWidth, halfHeight);
+        initialSpeed = new Vector2D(1, 1);
     }
 
     @Override
@@ -42,5 +47,17 @@ public class Level0 implements Level
     public Vector<Node> getRenderObjects()
     {
         return renderObjects;
+    }
+
+    @Override
+    public Vector2D getInitialPosition()
+    {
+        return initialPosition;
+    }
+
+    @Override
+    public Vector2D getInitialSpeed()
+    {
+        return initialSpeed;
     }
 }
