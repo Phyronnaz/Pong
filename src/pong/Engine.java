@@ -48,8 +48,6 @@ public class Engine
 
     private World world;
 
-    private Ball ball;
-
     public Engine(Stage stage, double windowWidth, double windowHeight, double racketWidth, double racketHeight, double racketDistanceToWall, double ballRadius)
     {
         this.stage = stage;
@@ -100,6 +98,16 @@ public class Engine
     public void addGameObject(GameObject object)
     {
         gameObjects.add(object);
+    }
+
+    public void addOnKeyPressed(EventHandler<? super KeyEvent> value)
+    {
+        onKeyPressedBinds.add(value);
+    }
+
+    public void addOnKeyReleased(EventHandler<? super KeyEvent> value)
+    {
+        onKeyReleasedBinds.add(value);
     }
 
     public void start()
@@ -171,16 +179,6 @@ public class Engine
         return scene;
     }
 
-    public void addOnKeyPressed(EventHandler<? super KeyEvent> value)
-    {
-        onKeyPressedBinds.add(value);
-    }
-
-    public void addOnKeyReleased(EventHandler<? super KeyEvent> value)
-    {
-        onKeyReleasedBinds.add(value);
-    }
-
     private void checkIfWon(double x, double y)
     {
         if (x < ballRadius + 1 && !(leftRacketY.getValue() - racketHeight <= y && y <= leftRacketY.getValue()))
@@ -222,15 +220,8 @@ public class Engine
         return ballRadius;
     }
 
-    public Ball getBall()
-    {
-        return ball;
-    }
-
     public void setBall(Ball ball)
     {
-        this.ball = ball;
-
         ChangeListener<Number> listener = (obs, o, n) -> checkIfWon(ball.getPositionX(), ball.getPositionY());
 
         ball.positionXProperty().addListener(listener);
