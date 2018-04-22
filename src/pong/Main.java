@@ -11,19 +11,22 @@ public class Main extends Application
     @Override
     public void start(Stage stage)
     {
-        int width = 1000;
-        int height = 500;
-        Engine engine = new Engine(stage, width, height, 20, 200, 10, 19);
+        int ScreenWidth = 1000;
+        int ScreenHeight = 500;
+        Engine engine = new Engine(stage, ScreenWidth, ScreenHeight, 20, 200, 10, 19);
         World world = new World(engine);
 
-        //TODO: Utiliser les coordonnées du jeu et pas celle de l'écran.
-        Ball ball = new Ball(engine, world, new Vector2D(1, 1), new Vector2D(width / 2, height / 2));
+        double gameWidth = engine.getWorldWidth();
+        double gameHeight = engine.getWorldHeight();
+
+        Ball ball = new Ball(engine, world, new Vector2D(0.5, 0.5), new Vector2D(gameWidth / 2, gameHeight / 2));
         new CircleBallRender(engine, ball);
 
-        Level.createLevel(world, engine, 1);
+        Level.createLevel(world, engine, 2);
 
-        new AIRacket(engine, ball, RacketSide.LEFT, 0.5);
-        new AIRacket(engine, ball, RacketSide.RIGHT, 2);
+        //new AIRacket(engine, ball, RacketSide.LEFT, 0.5);
+        new HumanRacket(engine, ball, RacketSide.LEFT, 0.5);
+        new AIRacket(engine, ball, RacketSide.RIGHT, 0.5);
 
         engine.start();
     }

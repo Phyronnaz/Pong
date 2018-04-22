@@ -23,8 +23,15 @@ public class Segment implements StaticCollision
         final Vector2D pointOnCircle = position.add(n.mul(-radius));
         final double speedDotN = Vector2D.dotProduct(speed, n);
 
-        if(-speedDotN <= 10e-7)
+        if(-speedDotN <= 10e-7) {
+            /* TODO
+            when the ball is inside a segment and its speed is
+            parallel to the segment, the ball will go back and forth
+            between the to extremities of the segment.
+            We might be able to fix this here.
+             */
             return intersectWithPoints(position, speed, radius);
+        }
 
         final double dt = Vector2D.dotProduct(start.sub(pointOnCircle), n) / speedDotN;
 
