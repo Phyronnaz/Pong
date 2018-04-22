@@ -16,6 +16,7 @@ public class Ball extends GameObject
     private final double radius;
     private final LevelManager levelManager;
     private final Timeline timeline;
+    private boolean first = true;
 
     public double getSpeedX()
     {
@@ -112,7 +113,15 @@ public class Ball extends GameObject
         speedXProperty().setValue(newSpeed.x);
         speedYProperty().setValue(newSpeed.y);
 
+        first = true;
+
         timeline.play();
+    }
+
+    @Override
+    public void stop()
+    {
+        timeline.stop();
     }
 
     private void next(ActionEvent e)
@@ -134,7 +143,18 @@ public class Ball extends GameObject
         KeyValue keyValueSpeedX = new KeyValue(speedXProperty(), speed.x);
         KeyValue keyValueSpeedY = new KeyValue(speedYProperty(), speed.y);
 
-        Duration time = timeline.getCurrentTime().add(Duration.millis(dt));
+        double newDt;
+        if (first)
+        {
+            first = false;
+            newDt = dt * 10;
+        }
+        else
+        {
+            newDt = dt;
+        }
+
+        Duration time = timeline.getCurrentTime().add(Duration.millis(newDt));
 
         KeyFrame keyFrame = new KeyFrame(time, keyValuePositionX, keyValuePositionY, keyValueSpeedX, keyValueSpeedY);
         timeline.getKeyFrames().add(keyFrame);

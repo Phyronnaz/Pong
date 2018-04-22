@@ -21,6 +21,10 @@ public abstract class GameObject
     {
     }
 
+    void stop()
+    {
+    }
+
     Node getRender()
     {
         return null;

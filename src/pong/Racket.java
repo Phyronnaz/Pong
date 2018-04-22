@@ -69,6 +69,12 @@ public abstract class Racket extends GameObject
         racketY.setValue(initialRacketY);
     }
 
+    @Override
+    public void stop()
+    {
+        timeline.stop();
+    }
+
     public RacketSide getSide()
     {
         return side;

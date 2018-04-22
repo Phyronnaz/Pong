@@ -38,7 +38,8 @@ public class LevelManager extends GameObject
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
-            engine.setWorld(new World(engine.getWorldWidth(), engine.getWorldHeight()));
+            engine.setWorld(new World(1e9, 1e9));
+            engine.stop();
         }
     }
 
@@ -67,7 +68,7 @@ public class LevelManager extends GameObject
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
-            return new Vector2D(-1e9, -1e9);
+            return new Vector2D(engine.getWorldWidth() / 2, 1e8);
         }
     }
 
@@ -79,7 +80,7 @@ public class LevelManager extends GameObject
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
-            return new Vector2D(0, 0);
+            return new Vector2D(0.1, 0.1);
         }
     }
 }

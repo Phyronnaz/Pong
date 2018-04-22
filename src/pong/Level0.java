@@ -33,8 +33,8 @@ public class Level0 implements Level
         world.addStaticCollision(segment1_2);
         renderObjects.add(new SegmentRender(engine, segment1_2));
 
-        initialPosition = new Vector2D(halfWidth, halfHeight);
-        initialSpeed = new Vector2D(1, 1);
+        initialPosition = new Vector2D(halfWidth - 100, halfHeight);
+        initialSpeed = new Vector2D(1, 0.5);
     }
 
     @Override

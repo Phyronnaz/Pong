@@ -125,6 +125,14 @@ public class Engine
         }
     }
 
+    public void stop()
+    {
+        for (GameObject gameObject : gameObjects)
+        {
+            gameObject.stop();
+        }
+    }
+
     private void nextLevel()
     {
         for (GameObject gameObject : gameObjects)
