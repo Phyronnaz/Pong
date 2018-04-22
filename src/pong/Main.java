@@ -23,7 +23,7 @@ public class Main extends Application
         int height = 500;
         Engine engine = new Engine(stage, width, height, 20, 200, 10, 19);
 
-        LevelManager levelManager = new LevelManager(engine, new Level0(engine), new Level1(engine));
+        LevelManager levelManager = new LevelManager(engine, new Level1(engine));
 
         Ball ball = new Ball(engine, levelManager);
 

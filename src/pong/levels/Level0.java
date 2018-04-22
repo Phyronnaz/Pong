@@ -26,17 +26,9 @@ public class Level0 implements Level
 
         this.world = new World(width, height);
 
-        Segment segment1_0 = new Segment(new Vector2D(halfWidth, (height * 1) / 12), new Vector2D(halfWidth, (height * 3) / 12));
-        world.addStaticCollision(segment1_0);
-        renderObjects.add(new SegmentRender(engine, segment1_0));
-
-        Segment segment1_1 = new Segment(new Vector2D(halfWidth, (height * 5) / 12), new Vector2D(halfWidth, (height * 7) / 12));
-        world.addStaticCollision(segment1_1);
-        renderObjects.add(new SegmentRender(engine, segment1_1));
-
-        Segment segment1_2 = new Segment(new Vector2D(halfWidth, (height * 9) / 12), new Vector2D(halfWidth, (height * 11) / 12));
-        world.addStaticCollision(segment1_2);
-        renderObjects.add(new SegmentRender(engine, segment1_2));
+        LevelGenerator.createSegment(world, renderObjects, engine, halfWidth,(height * 0) / 12, halfWidth, (height * 2) / 12);
+        LevelGenerator.createSegment(world, renderObjects, engine, halfWidth,(height * 5) / 12, halfWidth, (height * 7) / 12);
+        LevelGenerator.createSegment(world, renderObjects, engine, halfWidth,(height * 10) / 12, halfWidth, (height * 12) / 12);
 
         initialPosition = new Vector2D(halfWidth - 100, halfHeight);
         initialSpeed = new Vector2D(1, 0.5);
