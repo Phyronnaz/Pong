@@ -68,7 +68,7 @@ public class LevelManager extends GameObject
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
-            return new Vector2D(engine.getWorldWidth() / 2, 1e8);
+            return new Vector2D(engine.getWorldWidth() / 2, engine.getWorldHeight() / 2);
         }
     }
 

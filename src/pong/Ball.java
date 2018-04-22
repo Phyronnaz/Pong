@@ -9,6 +9,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.util.Duration;
 
+import static java.lang.Math.random;
+
 public class Ball extends GameObject
 {
     private final Engine engine;
@@ -106,6 +108,12 @@ public class Ball extends GameObject
 
         Vector2D newPosition = levelManager.getInitialPosition();
         Vector2D newSpeed = levelManager.getInitialSpeed();
+
+        if (random() > 0.5)
+        {
+            newPosition = newPosition.flipAroundVerticalLine(engine.getWorldWidth() / 2);
+            newSpeed = newSpeed.flipAroundVerticalLine(0);
+        }
 
         positionXProperty().setValue(newPosition.x);
         positionYProperty().setValue(newPosition.y);
