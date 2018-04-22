@@ -16,10 +16,10 @@ public class Main extends Application
         Ball ball = new Ball(engine, world, new Vector2D(0.5, 0.5), new Vector2D(500, 250));
         new CircleBallRender(engine, ball);
 
-        world = Level.createLevel(world, engine,1);
+        Level.createLevel(world, engine, 1);
 
         new AIRacket(engine, ball, RacketSide.LEFT, 0.5);
-        new HumanRacket(engine, ball, RacketSide.RIGHT, 2);
+        new AIRacket(engine, ball, RacketSide.RIGHT, 2);
 
         engine.start();
     }

@@ -2,7 +2,7 @@ package pong;
 
 public class Level {
 
-    public static World createLevel(World world, Engine engine, int level)
+    public static void createLevel(World world, Engine engine, int level)
     {
 
         double height = engine.getWorldHeight();
@@ -27,8 +27,6 @@ public class Level {
             case 2:
 
         }
-
-        return world;
 
     };
 
