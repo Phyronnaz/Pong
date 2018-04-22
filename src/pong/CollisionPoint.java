@@ -10,7 +10,6 @@ public class CollisionPoint
     public CollisionPoint(double dt, Vector2D newSpeed)
     {
         assert dt >= 0;
-        assert newSpeed.x != 0 || newSpeed.y != 0;
 
         this.dt = dt;
         this.newSpeed = newSpeed;

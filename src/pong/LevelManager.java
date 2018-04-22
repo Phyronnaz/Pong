@@ -80,7 +80,7 @@ public class LevelManager extends GameObject
         }
         catch (ArrayIndexOutOfBoundsException e)
         {
-            return new Vector2D(0.1, 0.1);
+            return new Vector2D(0, 0);
         }
     }
 }
