@@ -1,4 +1,7 @@
-package pong;
+package pong.world;
+
+import pong.engine.Engine;
+import pong.Vector2D;
 
 import javax.management.RuntimeErrorException;
 

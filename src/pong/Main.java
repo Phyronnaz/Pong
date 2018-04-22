@@ -2,6 +2,9 @@ package pong;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import pong.engine.*;
+import pong.world.Level;
+import pong.world.World;
 
 public class Main extends Application
 {

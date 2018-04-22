@@ -1,6 +1,9 @@
-package pong;
+package pong.engine;
 
 import javafx.beans.property.DoubleProperty;
+import pong.Vector2D;
+import pong.world.CollisionPoint;
+import pong.world.World;
 
 public class Ball implements ScriptObject
 {

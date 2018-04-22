@@ -1,4 +1,4 @@
-package pong;
+package pong.engine;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
@@ -12,6 +12,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import pong.Vector2D;
 
 import java.util.Vector;
 

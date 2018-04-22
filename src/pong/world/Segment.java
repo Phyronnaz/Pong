@@ -1,10 +1,5 @@
-package pong;
-
-import javafx.util.Pair;
-
-import java.util.Vector;
-
-import static java.lang.Math.*;
+package pong.world;
+import pong.Vector2D;
 
 public class Segment implements StaticCollision
 {

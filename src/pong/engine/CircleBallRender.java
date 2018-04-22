@@ -1,4 +1,4 @@
-package pong;
+package pong.engine;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -9,6 +9,7 @@ import javafx.scene.shape.Circle;
 
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
+import pong.Vector2D;
 
 public class CircleBallRender extends Circle implements BallRender
 {

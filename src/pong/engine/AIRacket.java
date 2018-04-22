@@ -1,4 +1,4 @@
-package pong;
+package pong.engine;
 
 import static com.sun.javafx.util.Utils.clamp;
 import static java.lang.Math.*;

@@ -1,4 +1,4 @@
-package pong;
+package pong.engine;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -6,8 +6,6 @@ import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.util.Duration;
-
-import javax.swing.plaf.synth.SynthEditorPaneUI;
 
 public class HumanRacket extends Racket
 {

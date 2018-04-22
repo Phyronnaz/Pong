@@ -1,4 +1,7 @@
-package pong;
+package pong.world;
+
+import pong.Vector2D;
+import pong.engine.Engine;
 
 import java.util.Vector;
 
