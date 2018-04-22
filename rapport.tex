@@ -56,7 +56,7 @@
 %
 \begin{document}
 %
-\title{PROG2 : Projet \lstinline{PONG}}
+\title{PROG2 : Projet PONG}
 %
 \author{Tom Bachard\and Guillaume Barbier\and Victor Careil}
 %
@@ -64,5 +64,41 @@
 %
 \maketitle
 %
+%
+
+\begin{description}
+  \item[Classification ACM] D.m
+  \item[Mots-clés] Programmation; Java; JavaFX; Programmation événementielle; PONG
+\end{description}
+
+%
+\begin{abstract}
+Le paradigme de programmation événementielle est très souvent utilisé lorsqu'une application interagit de manière continue avec un utilisateur, et notamment dans la conception d'un jeu de réflexe. Grâce à la bibliothèque JavaFX de Java (anciennement Swing), nous mettons au point un petit moteur de jeu permettant de jouer au très célèbre jeu PONG.
+\end{abstract}
+%
+
+%
+\section{Introduction}
+%
+
+  \subsection{PONG}
+  	%
+	PONG est l'un des premiers jeux vidéos commercialisés. Inventé en 1972 par Nolan Bushnell et Allan Alcorn, ce jeu propose de faire s'affronter tantôt deux joueurs, tantôt un joueur et un ordinateur, dans un match de tennis de table vu du dessus. C'est le premier jeu qui devient populaire, en attestent les 8000 bornes d'arcade vendues par \emph{Atari} l'année de son invention.
+	
+	Lors d'un affrontement joueur contre joueur, le jeu doit être capable de gérer les déplacements des deux raquettes en même temps, tout en calculant la trajectoire de la balle, afin que cette dernière soit cohérente et permette une bonne expérience de jeu. Pour cela, nous développons notre PONG en Java, en nous servant de la bibliothèque JavaFX (anciennement Swing), spécialisée dans le traitement d'événements interactifs concurrents.
+	
+  \subsection{Programmation événementielle}
+  	%
+	La programmation événementielle est un paradigme de programmation qui, par opposition à la programmation séquentielle, s'appuie sur les événements et leur réactions qu'elle reçoit. Ce qu'on définit comme \og événement \fg{} est très large, en effet, sont considérés comme tels les actions suivantes:
+	\begin{itemize}
+		\item l'ajout d'élément dans une liste ;
+		\item le changement d'état d'un booléen ;
+		\item le clic d'une souris ;
+		\item la pression d'une touche de clavier\dots
+	\end{itemize} 
+	
+	On remarque que ces points, et notamment les deux derniers, sont très intéressants dans la réalisation d'un jeu tel que PONG. En effet, considérer les positions des différentes raquettes, ainsi que la balle, comme des événements permet une implantation simple et élégante de ce jeu.
+	
+	Enfin, il est à noté que la programmation événementielle est généralement utilisée avec des langages de haut niveau, ce qui justifie notre utilisation de Java.
 
 \end{document}
