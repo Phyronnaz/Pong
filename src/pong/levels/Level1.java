@@ -1,5 +1,6 @@
 package pong.levels;
 
+import com.sun.javafx.geom.PathIterator;
 import javafx.scene.Node;
 import pong.core.*;
 import pong.render.SegmentRender;
@@ -80,6 +81,6 @@ public class Level1 implements Level
     @Override
     public Vector2D getInitialSpeed()
     {
-        return initialSpeed;
+        return initialSpeed.rotate(Math.PI/16);
     }
 }

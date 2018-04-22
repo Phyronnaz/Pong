@@ -1,9 +1,14 @@
 package pong.core;
 
+import java.util.Random;
+
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 
 public class Vector2D
 {
+    private static Random rand = new Random();
     public double x;
     public double y;
 
@@ -38,6 +43,10 @@ public class Vector2D
         return new Vector2D(x * other, y * other);
     }
 
+    public Vector2D rotate(double angle) {
+        return new Vector2D(x*cos(angle) - y*sin(angle), x*sin(angle)+y*cos(angle));
+    }
+
     public double length()
     {
         return sqrt(x * x + y * y);
@@ -57,5 +66,9 @@ public class Vector2D
     public Vector2D flipAroundVerticalLine(double lineX)
     {
         return new Vector2D(lineX - (x - lineX), y);
+    }
+
+    public Vector2D randomDirection(double standard_deviation) {
+        return rotate(rand.nextGaussian()*standard_deviation);
     }
 }

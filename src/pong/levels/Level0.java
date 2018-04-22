@@ -6,6 +6,9 @@ import pong.render.SegmentRender;
 
 import java.util.Vector;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.random;
+
 public class Level0 implements Level
 {
     private final World world;
@@ -60,6 +63,6 @@ public class Level0 implements Level
     @Override
     public Vector2D getInitialSpeed()
     {
-        return initialSpeed;
+        return initialSpeed.randomDirection(PI/16);
     }
 }
