@@ -1,4 +1,4 @@
-package pong.world;
+package pong;
 
 import pong.Vector2D;
 

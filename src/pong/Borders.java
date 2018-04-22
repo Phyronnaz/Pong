@@ -1,6 +1,4 @@
-package pong.world;
-
-import pong.Vector2D;
+package pong;
 
 public class Borders implements StaticCollision
 {
