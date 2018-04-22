@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
-import javafx.scene.Node;
 import javafx.util.Duration;
 
 import static java.lang.Math.random;
@@ -60,10 +59,10 @@ public class Ball extends GameObject
         return positionY;
     }
 
-    private DoubleProperty speedX = new SimpleDoubleProperty();
-    private DoubleProperty speedY = new SimpleDoubleProperty();
-    private DoubleProperty positionX = new SimpleDoubleProperty();
-    private DoubleProperty positionY = new SimpleDoubleProperty();
+    private final DoubleProperty speedX = new SimpleDoubleProperty();
+    private final DoubleProperty speedY = new SimpleDoubleProperty();
+    private final DoubleProperty positionX = new SimpleDoubleProperty();
+    private final DoubleProperty positionY = new SimpleDoubleProperty();
 
     public Ball(Engine engine, LevelManager levelManager)
     {

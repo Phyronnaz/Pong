@@ -1,6 +1,5 @@
 package pong;
 
-import javafx.beans.binding.Bindings;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.text.Text;
