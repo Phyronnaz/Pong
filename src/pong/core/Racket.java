@@ -9,6 +9,9 @@ import javafx.util.Duration;
 
 import static java.lang.Math.abs;
 
+/**
+ * Abstract racket class
+ */
 public abstract class Racket extends GameObject
 {
     private final Timeline timeline;
@@ -18,6 +21,13 @@ public abstract class Racket extends GameObject
     private final double initialRacketY;
     private final double speed;
 
+    /**
+     * Constructor
+     *
+     * @param engine Main engine
+     * @param side   Racket side
+     * @param speed  Speed of the racket
+     */
     public Racket(Engine engine, RacketSide side, double speed)
     {
         super(engine);
@@ -32,14 +42,22 @@ public abstract class Racket extends GameObject
         timeline.setOnFinished(this::next);
     }
 
-    protected double nextHeight()
+    /**
+     * Should be overridden by child classes
+     *
+     * @return the target Y position
+     */
+    protected double nextY()
     {
         return initialRacketY;
     }
 
+    /**
+     * Timeline callback
+     */
     private void next(ActionEvent e)
     {
-        double targetHeight = nextHeight();
+        double targetHeight = nextY();
         if (Double.isNaN(targetHeight))
         {
             targetHeight = getRacketY();
@@ -75,26 +93,41 @@ public abstract class Racket extends GameObject
         timeline.stop();
     }
 
+    /**
+     * @return the racket side
+     */
     public RacketSide getSide()
     {
         return side;
     }
 
+    /**
+     * @return the racket height
+     */
     public double getRacketHeight()
     {
         return racketHeight;
     }
 
+    /**
+     * @return the racket initial Y position
+     */
     public double getInitialRacketY()
     {
         return initialRacketY;
     }
 
+    /**
+     * @return the racket speed
+     */
     public double getSpeed()
     {
         return speed;
     }
 
+    /**
+     * @return the racket Y position
+     */
     public double getRacketY()
     {
         return racketY.get();

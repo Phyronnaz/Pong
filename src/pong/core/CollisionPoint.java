@@ -1,5 +1,8 @@
 package pong.core;
 
+/**
+ * Possible collision point; defined by a dt and the new speed after bounce
+ */
 public class CollisionPoint
 {
     private final double dt;
@@ -13,11 +16,17 @@ public class CollisionPoint
         this.newSpeed = newSpeed;
     }
 
+    /**
+     * @return dt
+     */
     public double getDt()
     {
         return dt;
     }
 
+    /**
+     * @return new speed after bounce
+     */
     public Vector2D getNewSpeed()
     {
         return newSpeed;

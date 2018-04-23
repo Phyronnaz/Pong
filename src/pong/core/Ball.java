@@ -10,6 +10,9 @@ import javafx.util.Duration;
 
 import static java.lang.Math.random;
 
+/**
+ * Handles the ball movement
+ */
 public class Ball extends GameObject
 {
     private final Engine engine;
@@ -19,51 +22,17 @@ public class Ball extends GameObject
     private final Timeline timeline;
     private boolean first = true;
 
-    public double getSpeedX()
-    {
-        return speedX.get();
-    }
-
-    public DoubleProperty speedXProperty()
-    {
-        return speedX;
-    }
-
-    public double getSpeedY()
-    {
-        return speedY.get();
-    }
-
-    public DoubleProperty speedYProperty()
-    {
-        return speedY;
-    }
-
-    public double getPositionX()
-    {
-        return positionX.get();
-    }
-
-    public DoubleProperty positionXProperty()
-    {
-        return positionX;
-    }
-
-    public double getPositionY()
-    {
-        return positionY.get();
-    }
-
-    public DoubleProperty positionYProperty()
-    {
-        return positionY;
-    }
-
     private final DoubleProperty speedX = new SimpleDoubleProperty();
     private final DoubleProperty speedY = new SimpleDoubleProperty();
     private final DoubleProperty positionX = new SimpleDoubleProperty();
     private final DoubleProperty positionY = new SimpleDoubleProperty();
 
+    /**
+     * Constructor
+     *
+     * @param engine       Main engine
+     * @param levelManager Level manager (for initial position/speed)
+     */
     public Ball(Engine engine, LevelManager levelManager)
     {
         super(engine);
@@ -88,15 +57,16 @@ public class Ball extends GameObject
         engine.setBall(this);
     }
 
-    public double getRadius()
-    {
-        return radius;
-    }
-
     @Override
     public void start()
     {
         timeline.play();
+    }
+
+    @Override
+    public void stop()
+    {
+        timeline.stop();
     }
 
     @Override
@@ -125,12 +95,9 @@ public class Ball extends GameObject
         timeline.play();
     }
 
-    @Override
-    public void stop()
-    {
-        timeline.stop();
-    }
-
+    /**
+     * Timeline callback
+     */
     private void next(ActionEvent e)
     {
         Vector2D position = new Vector2D(getPositionX(), getPositionY());
@@ -166,5 +133,77 @@ public class Ball extends GameObject
         KeyFrame keyFrame = new KeyFrame(time, keyValuePositionX, keyValuePositionY, keyValueSpeedX, keyValueSpeedY);
         timeline.getKeyFrames().add(keyFrame);
         timeline.playFrom(timeline.getCurrentTime());
+    }
+
+    /**
+     * @return the ball radius
+     */
+    public double getRadius()
+    {
+        return radius;
+    }
+
+    /**
+     * @return speeed along X axis
+     */
+    public double getSpeedX()
+    {
+        return speedX.get();
+    }
+
+    /**
+     * @return property of speed along X axis
+     */
+    public DoubleProperty speedXProperty()
+    {
+        return speedX;
+    }
+
+    /**
+     * @return speeed along Y axis
+     */
+    public double getSpeedY()
+    {
+        return speedY.get();
+    }
+
+    /**
+     * @return property of speed along Y axis
+     */
+    public DoubleProperty speedYProperty()
+    {
+        return speedY;
+    }
+
+    /**
+     * @return position.x
+     */
+    public double getPositionX()
+    {
+        return positionX.get();
+    }
+
+    /**
+     * @return position.x property
+     */
+    public DoubleProperty positionXProperty()
+    {
+        return positionX;
+    }
+
+    /**
+     * @return position.y
+     */
+    public double getPositionY()
+    {
+        return positionY.get();
+    }
+
+    /**
+     * @return position.y property
+     */
+    public DoubleProperty positionYProperty()
+    {
+        return positionY;
     }
 }

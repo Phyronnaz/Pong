@@ -6,6 +6,9 @@ import pong.core.Ball;
 import pong.core.Engine;
 import pong.core.GameObject;
 
+/**
+ * Circle render for the ball
+ */
 public class CircleBallRender extends GameObject
 {
     private final Circle circle;
@@ -14,7 +17,7 @@ public class CircleBallRender extends GameObject
     {
         super(engine);
 
-        this.circle = new Circle(engine.getScreenLength(ball.getRadius()));
+        this.circle = new Circle(ball.getRadius());
 
         this.circle.translateXProperty().bind(engine.getScreenPositionXBinding(ball.positionXProperty()));
         this.circle.translateYProperty().bind(engine.getScreenPositionYBinding(ball.positionYProperty()));

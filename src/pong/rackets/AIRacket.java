@@ -9,6 +9,9 @@ import pong.core.RacketSide;
 import static com.sun.javafx.util.Utils.clamp;
 import static java.lang.Math.abs;
 
+/**
+ * AI racket
+ */
 public class AIRacket extends Racket
 {
     private final DoubleProperty ballY;
@@ -21,7 +24,7 @@ public class AIRacket extends Racket
     }
 
     @Override
-    protected double nextHeight()
+    protected double nextY()
     {
         double sign = (ballY.getValue() + getRacketHeight() / 2 - getRacketY()) / abs(ballY.getValue() + getRacketHeight() / 2 - getRacketY());
         return getRacketY() + sign * getSpeed() * clamp(abs((ballY.getValue() + getRacketHeight() / 2 - getRacketY()) / getSpeed()), 0, 0.1);

@@ -10,6 +10,9 @@ import pong.core.Engine;
 import pong.core.Racket;
 import pong.core.RacketSide;
 
+/**
+ * Human racket
+ */
 public class HumanRacket extends Racket
 {
     private double currentY;
@@ -50,7 +53,7 @@ public class HumanRacket extends Racket
     }
 
     @Override
-    protected double nextHeight()
+    protected double nextY()
     {
         return currentY;
     }

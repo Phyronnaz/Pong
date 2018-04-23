@@ -1,10 +1,19 @@
 package pong.core;
 
+/**
+ * Screen Borders collisions
+ */
 public class Borders implements StaticCollision
 {
     private final double width;
     private final double height;
 
+    /**
+     * Constructor
+     *
+     * @param width  Screen width
+     * @param height Screen height
+     */
     public Borders(double width, double height)
     {
         this.width = width;

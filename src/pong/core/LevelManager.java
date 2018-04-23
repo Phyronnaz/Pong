@@ -7,12 +7,21 @@ import javafx.scene.text.Text;
 import java.util.Arrays;
 import java.util.Vector;
 
+/**
+ * Manages levels
+ */
 public class LevelManager extends GameObject
 {
     private final Engine engine;
     private final Vector<Level> levels = new Vector<>();
     private int currentLevel = 0;
 
+    /**
+     * Constructor
+     *
+     * @param engine Main engine
+     * @param levels List of levels
+     */
     public LevelManager(Engine engine, Level... levels)
     {
         super(engine);
@@ -59,6 +68,9 @@ public class LevelManager extends GameObject
         }
     }
 
+    /**
+     * @return the initial position
+     */
     public Vector2D getInitialPosition()
     {
         try
@@ -71,6 +83,9 @@ public class LevelManager extends GameObject
         }
     }
 
+    /**
+     * @return the initial speed
+     */
     public Vector2D getInitialSpeed()
     {
         try

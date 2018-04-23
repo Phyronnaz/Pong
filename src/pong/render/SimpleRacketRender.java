@@ -7,6 +7,9 @@ import pong.core.RacketSide;
 import pong.core.Engine;
 import pong.core.GameObject;
 
+/**
+ * Basic black racket render
+ */
 public class SimpleRacketRender extends GameObject
 {
     private final Rectangle rectangle;

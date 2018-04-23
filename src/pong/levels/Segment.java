@@ -4,11 +4,20 @@ import pong.core.CollisionPoint;
 import pong.core.StaticCollision;
 import pong.core.Vector2D;
 
+/**
+ * Segment collision
+ */
 public class Segment implements StaticCollision
 {
     private final Vector2D start;
     private final Vector2D end;
 
+    /**
+     * Constructor
+     *
+     * @param start Segment start
+     * @param end   Segment end
+     */
     public Segment(Vector2D start, Vector2D end)
     {
         this.start = start;

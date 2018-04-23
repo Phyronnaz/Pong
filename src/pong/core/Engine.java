@@ -18,6 +18,9 @@ import javafx.stage.Stage;
 
 import java.util.Vector;
 
+/**
+ * Main class
+ */
 public class Engine
 {
     private final Stage stage;
@@ -46,6 +49,17 @@ public class Engine
 
     private World world;
 
+    /**
+     * Constructor
+     *
+     * @param stage                Application stage
+     * @param windowWidth          Window width
+     * @param windowHeight         Window height
+     * @param racketWidth          Racket width
+     * @param racketHeight         Racket height
+     * @param racketDistanceToWall Distance between the rackets and the walls
+     * @param ballRadius           Radius of the ball
+     */
     public Engine(Stage stage, double windowWidth, double windowHeight, double racketWidth, double racketHeight, double racketDistanceToWall, double ballRadius)
     {
         this.stage = stage;
@@ -81,33 +95,39 @@ public class Engine
         this.world = null;
     }
 
-    public DoubleProperty getRacketYProperty(RacketSide side)
-    {
-        if (side == RacketSide.LEFT)
-        {
-            return leftRacketY;
-        }
-        else
-        {
-            return rightRacketY;
-        }
-    }
-
+    /**
+     * Register a new GameObject
+     *
+     * @param object the new GameObject
+     */
     public void addGameObject(GameObject object)
     {
         gameObjects.add(object);
     }
 
+    /**
+     * Bind OnKeyPressed
+     *
+     * @param value event to bind to
+     */
     public void addOnKeyPressed(EventHandler<? super KeyEvent> value)
     {
         onKeyPressedBinds.add(value);
     }
 
+    /**
+     * Bind OnKeyReleased
+     *
+     * @param value event to bind to
+     */
     public void addOnKeyReleased(EventHandler<? super KeyEvent> value)
     {
         onKeyReleasedBinds.add(value);
     }
 
+    /**
+     * Start the game
+     */
     public void start()
     {
         //Setting title to the Stage
@@ -125,6 +145,9 @@ public class Engine
         }
     }
 
+    /**
+     * End the game
+     */
     public void stop()
     {
         for (GameObject gameObject : gameObjects)
@@ -133,6 +156,9 @@ public class Engine
         }
     }
 
+    /**
+     * Go to the next level
+     */
     private void nextLevel()
     {
         for (GameObject gameObject : gameObjects)
@@ -143,6 +169,9 @@ public class Engine
         rightScore.setValue(0);
     }
 
+    /**
+     * Reset the gameobjects after a score
+     */
     private void reset()
     {
 
@@ -153,6 +182,11 @@ public class Engine
         stage.setScene(createScene());
     }
 
+    /**
+     * Recreate the scene
+     *
+     * @return the scene
+     */
     private Scene createScene()
     {
         Group group = new Group(scoresText);
@@ -185,6 +219,12 @@ public class Engine
         return scene;
     }
 
+    /**
+     * Check if the ball is at an edge of the screen
+     *
+     * @param x Ball x position
+     * @param y Ball y position
+     */
     private void checkIfWon(double x, double y)
     {
         if (x < ballRadius + 1 && !(leftRacketY.getValue() - racketHeight <= y && y <= leftRacketY.getValue()))
@@ -201,31 +241,70 @@ public class Engine
         }
     }
 
+    /**
+     * Get the racket on side side Y property
+     *
+     * @param side Side of the racket
+     * @return Y property
+     */
+    public DoubleProperty getRacketYProperty(RacketSide side)
+    {
+        if (side == RacketSide.LEFT)
+        {
+            return leftRacketY;
+        }
+        else
+        {
+            return rightRacketY;
+        }
+    }
+
+    /**
+     * Convert from local space to screen space
+     *
+     * @param position Position to convert in local space
+     * @return Screen space position
+     */
     public Vector2D getScreenPosition(Vector2D position)
     {
         return new Vector2D(racketWidth + racketDistanceToWall + position.x, windowHeight - position.y);
     }
 
+    /**
+     * Convert from local space to screen space, binding version
+     *
+     * @param x X position in local space
+     * @return X position in screen space
+     */
     public NumberBinding getScreenPositionXBinding(ObservableNumberValue x)
     {
         return Bindings.add(racketWidth + racketDistanceToWall, x);
     }
 
+    /**
+     * Convert from local space to screen space, binding version
+     *
+     * @param y Y position in local space
+     * @return Y position in screen space
+     */
     public NumberBinding getScreenPositionYBinding(ObservableNumberValue y)
     {
         return Bindings.subtract(windowHeight, y);
     }
 
-    public double getScreenLength(double length)
-    {
-        return length;
-    }
-
+    /**
+     * @return the ball radius
+     */
     public double getBallRadius()
     {
         return ballRadius;
     }
 
+    /**
+     * Set the ball
+     *
+     * @param ball ball
+     */
     public void setBall(Ball ball)
     {
         ChangeListener<Number> listener = (obs, o, n) -> checkIfWon(ball.getPositionX(), ball.getPositionY());
@@ -234,46 +313,75 @@ public class Engine
         ball.positionYProperty().addListener(listener);
     }
 
+    /**
+     * @return the current world
+     */
     public World getWorld()
     {
         return world;
     }
 
+    /**
+     * Set the world
+     *
+     * @param world world to set
+     */
     public void setWorld(World world)
     {
         this.world = world;
     }
 
+    /**
+     * @return racket distance to wall
+     */
     public double getRacketDistanceToWall()
     {
         return racketDistanceToWall;
     }
 
+    /**
+     * @return racket width
+     */
     public double getRacketWidth()
     {
         return racketWidth;
     }
 
+    /**
+     * @return racket height
+     */
     public double getRacketHeight()
     {
         return racketHeight;
     }
 
+    /**
+     * @return window width
+     */
     public double getWindowWidth()
     {
         return windowWidth;
     }
 
+    /**
+     * @return window height
+     */
     public double getWindowHeight()
     {
         return windowHeight;
     }
 
+    /**
+     * @return world width
+     */
     public double getWorldWidth()
     {
         return windowWidth - 2 * (racketWidth + racketDistanceToWall);
     }
 
+    /**
+     * @return world height
+     */
     public double getWorldHeight()
     {
         return windowHeight;

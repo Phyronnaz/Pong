@@ -5,6 +5,9 @@ import pong.levels.Segment;
 import pong.core.Engine;
 import pong.core.Vector2D;
 
+/**
+ * Basic black segment render
+ */
 public class SegmentRender extends Line
 {
     public SegmentRender(Engine engine, Segment segment)
