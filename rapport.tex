@@ -83,9 +83,18 @@ Le paradigme de programmation événementielle est très souvent utilisé lorsqu
 
   \subsection{PONG}
   	%
-	PONG est l'un des premiers jeux vidéos commercialisés. Inventé en 1972 par Nolan Bushnell et Allan Alcorn, ce jeu propose de faire s'affronter tantôt deux joueurs, tantôt un joueur et un ordinateur, dans un match de tennis de table vu du dessus. C'est le premier jeu qui devient populaire, en attestent les 8000 bornes d'arcade vendues par \emph{Atari} l'année de son invention.
+	PONG est l'un des premiers jeux vidéos commercialisés. Inventé en 1972 par Nolan Bushnell et Allan Alcorn, ce jeu propose de faire s'affronter tantôt deux joueurs, tantôt un joueur et un ordinateur, dans un match de tennis de table vu du dessus. C'est le premier jeu qui devient populaire, en attestent les 8000 bornes d'arcade vendues par \emph{Atari} l'année de son invention. Un exemple de partie est donné en figure \ref{Pong1}.
 	
 	Lors d'un affrontement joueur contre joueur, le jeu doit être capable de gérer les déplacements des deux raquettes en même temps, tout en calculant la trajectoire de la balle, afin que cette dernière soit cohérente et permette une bonne expérience de jeu. Pour cela, nous développons notre PONG en Java, en nous servant de la bibliothèque JavaFX (anciennement Swing), spécialisée dans le traitement d'événements interactifs concurrents.
+	
+	\begin{figure}
+  	  \begin{center}
+    	    \includegraphics[width=0.5\textwidth]{Pong1}
+    	    \caption{Une partie de Pong.}
+    	    \label{Pong1}
+  	  \end{center}
+	\end{figure}	
+	
 	
   \subsection{Programmation événementielle}
   	%
