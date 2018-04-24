@@ -104,9 +104,9 @@ Le paradigme de programmation événementielle est très souvent utilisé lorsqu
 \section{Concepts généraux}
 %
 
-    \subsection{Les timelines !}
+    \subsection{Les \emph{timelines}}
     %
-    Écrire un truc sur ces bidules. :\^{})
+    La principale source d'animation dans notre jeu sera gérée à travers les \emph{timelines}. En effet, cette bibliothèque permet d'animer les représentation graphiques de nos objets. Il suffit, par exemple pour la balle, de calculer son prochain point d'intersection, le temps où elle réalisera la collision, et il n'y a plus qu'à faire avancer la balle le long du segment entre son point actuel et son point de collision.
     
     \subsection{Utilisation des \emph{bindings}}
     %
@@ -121,7 +121,7 @@ Le paradigme de programmation événementielle est très souvent utilisé lorsqu
 
 Lors de la réalisation du jeu, nous avons séparé les classes en deux catégories, comme expliqué précédemment. D'une part, nos classes de calculs, vivants dans un monde purement mathématique, et d'autre part nos classes graphiques, qui appellent les fonctions des premiers classes afin de dessiner les objets aux bons endroits.
 
-    \subsection{Classes du moteur}
+    \subsection{Classes du moteur de jeu}
     %
     Nous avons choisi de créer un petit moteur de jeu lors de ce projet, principalement de rendre les collisions des balles avec les murs ou raquettes. On pourra noter dans le sous groupe de fichiers \emph{core} des énumérations et des interfaces, tant pour la lisibilité du code que pour sa modularité.
     	
@@ -135,16 +135,33 @@ Lors de la réalisation du jeu, nous avons séparé les classes en deux catégor
 	
 	C'est aussi ce fichier qui gère la scène qui contiendra les objets que l'on générera et déplacera lors du jeu. On notera que les différents \emph{bindings} sont créés à ce moment du processus.
 	
-	Enfin, c'est au travers de ce classe que sont gérés les affichages des scores et autres textes durant la partie.
+	Enfin, c'est au travers de ce classe que sont créés et mis à jour les affichages des scores et autres textes, tels que celui de victoire, durant la partie.
 	
         \subsubsection{Classe \emph{World}}
         %
-        Ce classe permet de créer la zone de jeu, dont les bordures de la fenêtre, et d'y ajouter les collisions avec les différents éléments présents dans la zone de jeu. On voit aussi qu'il change la direction de la balle en présence d'une collision.
+        Cette classe permet de créer la zone de jeu, dont les bordures de la fenêtre, et d'y ajouter les collisions avec les différents éléments présents dans la zone de jeu. On remarquera que les bordures extérieures ne sont pas les seuls objets capables de générer des collisions. 
         
         \subsubsection{Classe \emph{Borders}}
         %
         L'unique but de ce classe est de calculer les prochaines intersections de la balle avec les bordures. Ce faisant, on peut directement calculer les \emph{timelines} pour la balle. À chaque nouvelle intersection, on recommence le calcul.
         
-        Les collisions sont gérées sur les vitesses selon l'axe des abscisses ou des ordonnées, selon le type de collision. 
+        Les collisions sont gérées sur les vitesses selon l'axe des abscisses ou des ordonnées, selon le type de collision.
+        
+        \subsubsection{Classe \emph{LevelManager}}
+        %
+        Notre implémentation de PONG propose, une fois un certain score atteint, de passer d'un niveau à un autre. C'est au travers de cette classe qu'est réalisée la transition des niveaux. Une interface simple en liste est proposée.
+        
+    \subsection{Classe de rendu graphique}
+    %
+    Afin de respecter le paradigme de séparation moteur/graphique, nous avons implanté pour chaque objet à rendre une classe qui ne s'occupe que d'afficher la figure géométrique concernée. Chacun de nos \emph{renderer} est en réalité une extension simple d'une classe Java déjà existante, permettant des modifications simples:
+    \begin{itemize}
+      \item \emph{SimpleRacketRender}, qui affiche les raquettes, étend la classe \emph{Rectangle} ;
+      \item \emph{SegmentRender}, qui affiche les segments, étend la classe \emph{Line} ;
+      \item \emph{BallRender}, qui affiche la balle, étend la classe \emph{Circle}.
+    \end{itemize}
+    
+    \bigskip
+    
+    Dans le code, on ne voit que de rares appels à des fonctions du moteur de jeu, la plupart étant des \emph{bindings}.
 
 \end{document}
