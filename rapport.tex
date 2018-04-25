@@ -191,6 +191,17 @@ Lors de la réalisation du jeu, nous avons séparé les classes en deux catégor
 	%
 	Notre implémentation du jeu PONG propose comme extension la possibilité de jouer à plusieurs niveaux différents. En effet, lorsque l'un des joueurs atteint le score de 5, le niveau actuel change, et les scores sont remis à zéro. La classe \emph{LevelManager} s'occupe de la gestion des niveaux.
 	
-	De plus, s'ajoute à cette fonctionnalité la possibilité de créer des niveaux nous même. Un créateur de niveaux, au travers de la classe \emph{LevelGenerator}, propose une interface simple, mais \og codée en dur \fg{}, de créer des classes de niveaux, à l'instar de \emph{Level0} et \emph{Level1}. Actuellement, il est possible de créer des segments, des rectangles et des losanges, mais, il suffit de penser à d'autres formes géométriques à implémenter et à les écrire dans \emph{LevelGenerator} pour améliorer l'interface de création. On remarque aussi que, bien que non réalisée, s'esquisse une implémentation d'un créateur de niveau avec une interface utilisateur.
+	De plus, s'ajoute à cette fonctionnalité la possibilité de créer des niveaux nous même. Un créateur de niveaux, au travers de la classe \emph{LevelGenerator}, propose une interface simple, mais \og codée en dur \fg{}, de créer des classes de niveaux, à l'instar de \emph{Level0} et \emph{Level1}, comme le montre la figure \ref{fig:level1}. Actuellement, il est possible de créer des segments, des rectangles et des losanges, mais, il suffit de penser à d'autres formes géométriques à implémenter et à les écrire dans \emph{LevelGenerator} pour améliorer l'interface de création. 
+		
+	\begin{figure}[!h]
+  	  \begin{center}
+    	    \includegraphics[width=\textwidth]{level1.png}
+    	    \caption{Exemple de niveau PONG.}
+    	    \label{fig:level1}
+  	  \end{center}
+	\end{figure}
+	
+	On remarque aussi que, bien que non réalisée, s'esquisse une implémentation d'un créateur de niveau avec une interface utilisateur.
+
 
 \end{document}
