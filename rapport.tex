@@ -140,14 +140,13 @@ Lors de la réalisation du jeu, nous avons séparé les classes en deux catégor
     	
 	\subsubsection*{Classe \emph{Vector2D}}
 	%
-	Ce classe contient une classe abstraite de vecteur en deux dimensions, utiles pour tous nos calculs. On y retrouve les fonctions classiques d'addition, multiplication, de norme, mais aussi des plus spécifiques à notre jeu telles que des rotations, de calcul d'un vectur normal, ou de petite perturbation angulaire aléatoire.
+	Ce classe contient une classe abstraite de vecteur en deux dimensions, utiles pour tous nos calculs. On y retrouve les fonctions classiques d'addition, multiplication, de norme, mais aussi des plus spécifiques à notre jeu telles que des rotations, de calcul d'un vectur normal, ou d'ajout d'une petite perturbation angulaire aléatoire (utile pour que les parties ne soient pas toutes identiques).
 	
 	\subsubsection*{Classe \emph{Engine}}
 	%
-	Le fichier \emph{Engine} est la pièce principale du moteur. En effet, c'est lui qui contient l'entièreté des constantes liées au jeu. De plus, des méthodes classiques aux moteurs de jeu nous permettent de gérer facilement le lancement du jeu, son arrêt, les conditions de victoires, \emph{etc}.
+	Le fichier \emph{Engine} est la pièce principale du moteur. En effet, c'est lui qui contient l'entièreté des constantes liées au jeu. De plus, des méthodes classiques aux moteurs de jeu nous permettent de gérer facilement le lancement du jeu, son arrêt, les conditions de victoires, \emph{etc}. C'est aussi cette classe qui gère la scène qui contiendra les objets que l'on générera et déplacera lors du jeu.
 	
-	C'est aussi cette classe qui gère la scène qui contiendra les objets que l'on générera et déplacera lors du jeu. On notera que les différents \emph{bindings} sont créés à ce moment du processus.
-	
+	De plus nous considérons que certaines valeurs, telles que la position des raquettes, font partie intégrante du jeu. Plutôt que de les reléguer à des classes qui gèrent les raquettes, ces valeurs sont des \og Property \fg qui appartiennent à la classe \emph{Engine}. Ce sera ensuite aux classes filles de \emph{Racket} de modifier ces valeurs selont les actions des joueurs.
         \subsubsection*{Classe \emph{World}}
         %
         Cette classe permet de créer la zone de jeu, dont les bordures de la fenêtre, et d'y ajouter les collisions avec les différents éléments présents dans la zone de jeu. On remarquera que les bordures extérieures ne sont pas les seuls objets capables de générer des collisions. 
