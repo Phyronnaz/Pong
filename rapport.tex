@@ -126,6 +126,8 @@ Le paradigme de programmation événementielle est très souvent utilisé lorsqu
     \subsection{Séparation du rendu et des calculs}
     %
     Dans l'optique de rendre notre code solide et modulable, nous appliquerons le principe de \og séparation des deux mondes \fg{}. En effet, le monde des calculs mathématiques, trajectoires, rebonds, \dots, et celui du rendu des figures à l'écran, balle, raquettes, \dots, ne doivent pas se croiser. Les classes graphiques ne doivent rien calculer, cela permet de changer radicalement la manière de calcul sans avoir à toucher à ces classes. On pourra même attester de cette robustesse dans notre code puisqu'après la seconde démonstration, nos collisions ont été entièrement refaites, sans avoir à toucher à quoi que se soit dans nos classes graphiques.
+
+    Nous avons également deux systèmes de coordonnées, un système local o\'u sont effectué les calculs et la logique interne du jeu. Ce système de coordonnées peut ensuite être converti dans un système de coordonnées graphique qui lui est uniquement dédié à l'affichage. Ainsi, la logique interne du jeu Pong n'a pas à dépendre de la bibliothèque JavaFX qui gère l'affichage.
     
 \section{Implémentation de notre PONG}
 %
@@ -134,11 +136,11 @@ Lors de la réalisation du jeu, nous avons séparé les classes en deux catégor
 
     \subsection{Classes du moteur de jeu}
     %
-    Nous avons choisi de créer un petit moteur de jeu lors de ce projet, principalement de rendre les collisions des balles avec les murs ou raquettes. On pourra noter dans le sous groupe de fichiers \emph{core} des énumérations et des interfaces, tant pour la lisibilité du code que pour sa modularité.
+    Nous avons choisi de créer un petit moteur de jeu lors de ce projet, principalement de rendre les collisions des balles avec les murs ou raquettes. On pourra noter dans le package \emph{core} des énumérations et des interfaces, tant pour la lisibilité du code que pour sa modularité.
     	
 	\subsubsection*{Classe \emph{Vector2D}}
 	%
-	Ce classe contient une classe abstraite de vecteur en deux dimensions, utiles pour tous nos calculs. On y retrouve les fonctions classiques d'addition, multiplication, de norme, mais aussi des plus spécifiques à notre jeu telles que des rotations ou de calcul d'un vectur normal.
+	Ce classe contient une classe abstraite de vecteur en deux dimensions, utiles pour tous nos calculs. On y retrouve les fonctions classiques d'addition, multiplication, de norme, mais aussi des plus spécifiques à notre jeu telles que des rotations, de calcul d'un vectur normal, ou de petite perturbation angulaire aléatoire.
 	
 	\subsubsection*{Classe \emph{Engine}}
 	%
