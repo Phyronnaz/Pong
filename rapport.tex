@@ -149,19 +149,20 @@ Lors de la réalisation du jeu, nous avons séparé les classes en deux catégor
 	De plus nous considérons que certaines valeurs, telles que la position des raquettes, font partie intégrante du jeu. Plutôt que de les reléguer à des classes qui gèrent les raquettes, ces valeurs sont des \og Property \fg qui appartiennent à la classe \emph{Engine}. Ce sera ensuite aux classes filles de \emph{Racket} de modifier ces valeurs selont les actions des joueurs.
         \subsubsection*{Classe \emph{World}}
         %
-        Cette classe permet de créer la zone de jeu, dont les bordures de la fenêtre, et d'y ajouter les collisions avec les différents éléments présents dans la zone de jeu. On remarquera que les bordures extérieures ne sont pas les seuls objets capables de générer des collisions. 
+	Cette classe permet de créer la zone de jeu, dont les bordures de la fenêtre, et d'y ajouter les collisions avec les différents éléments présents dans la zone de jeu, sous la forme d'instances de classes sous l'interface \emph{StaticCollision}. Pour effectuer le calcul des collisions, il suffit d'indiquer à la classe \og World\fg la position, la vitesse et le rayon de la balle. Cette classe se charge ensuite d'effectuer tout les calcules nécessaires de manière transparente. La balle a ainsi aucune connaissance des objets dans le jeux, mais peut tout de même les prendre en compte dans ses déplacements.
         
-        \subsubsection*{Classe \emph{Borders}}
+        \subsubsection*{Interface \emph{StaticCollision}}
         %
-        L'unique but de ce classe est de calculer les prochaines intersections de la balle avec les bordures. Ce faisant, on peut directement calculer les \emph{timelines} pour la balle. À chaque nouvelle intersection, on recommence le calcul.
+	L'unique but de cette interface est de calculer les prochaines intersections de la balle avec un certain objet( grâce à quoi la balle peut calculer les timelines nécessaires à son déplacement). Les objets qui sont gérés pour l'instant sont les bordures du jeu (classe \emph{Borders})et les segments (\emph{Segment}). Une méthode statique de \emph{LevelGenerator} permet de créer des rectangles, mais elle crée en réalité 4 segments.
         
-        Les collisions sont gérées sur les vitesses selon l'axe des abscisses ou des ordonnées, selon le type de collision.
+	\subsubsection*{Interface \emph{Level}}
+	%
+	Cette interace permet de décrire ce qu'est un niveau : c'est une classe qui crée une instance de \emph{Worl} et la rempli d'instances de \emph{StaticCollision}. Elle décrit ensuite comment afficher ces objets, ce qui sera passé à l'\emph{Engine} par le \emph{LevelManager}.
         
         \subsubsection*{Classe \emph{LevelManager}}
         %
-        Notre implémentation de PONG propose, une fois un certain score atteint, de passer d'un niveau à un autre. C'est au travers de cette classe qu'est réalisée la transition des niveaux, avec la fonction \emph{nextLevel}. La structure de sauvegarde des niveaux est invisible pour le reste du programme.
+	Notre implémentation de PONG propose, une fois un certain score atteint, de passer d'un niveau à un autre. C'est au travers de cette classe qu'est réalisée la transition des niveaux, avec la fonction \emph{nextLevel}. La structure de sauvegarde des niveaux est invisible pour le reste du programme. En effet, la classe \emph{Engine} n'a pas connaissance de la classe \emph{LevelManager}, car le moteur de jeu doit seulement se soucier de la bonne exécution des parties, pas du niveau dans lequel ces parties sont exécutées.
         
-        C'est aussi ici que sont gérés les différents textes qui apparaissent au cours du jeu, comme par exemple les scores (dynamiques) et les messages de victoire.
         
     \subsection{Classe de rendu graphique}
     %
