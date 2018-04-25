@@ -108,7 +108,7 @@ Le paradigme de programmation événementielle est très souvent utilisé lorsqu
 	
 	On remarque que ces points, et notamment les deux derniers, sont très intéressants dans la réalisation d'un jeu tel que PONG. En effet, considérer les positions des différentes raquettes, ainsi que la balle, comme des événements permet une implantation simple et élégante de ce jeu.
 
-	De plus, cette notion d'évennement change la façon dont sont gérés les acteurs. Si l'affichage a besoin de la position de la balle, ce n'est pas à la balle de donner sa position à l'affichage, mais c'est plutôt à l'affichage de réagir à l'évènement \og la balle a bougé \fg. Ceci change beaucoup la logique et l'organisation du code pour le mieux.
+	De plus, cette notion d'évennement change la façon dont sont gérés les acteurs. Si l'affichage a besoin de la position de la balle, ce n'est pas à la balle de donner sa position à l'affichage, mais c'est plutôt à l'affichage de réagir à l'évènement \og la balle a bougé \fg. Ceci change la logique et l'organisation du code pour le mieux.
 	
 	Enfin, il est à noté que la programmation événementielle est généralement utilisée avec des langages de haut niveau, ce qui justifie notre utilisation de Java.
 	
@@ -117,7 +117,7 @@ Le paradigme de programmation événementielle est très souvent utilisé lorsqu
 
     \subsection{Les \emph{timelines}}
     %
-    La principale source d'animation dans notre jeu sera gérée à travers les \emph{timelines}. En effet, cette bibliothèque permet d'animer les représentation graphiques de nos objets. Il suffit, par exemple pour la balle, de calculer son prochain point d'intersection, le temps où elle réalisera la collision, et il n'y a plus qu'à faire avancer la balle le long du segment entre son point actuel et son point de collision.
+    La principale source d'animation dans notre jeu sera gérée à travers les \emph{timelines}. En effet, cette bibliothèque permet d'animer les représentation graphiques de nos objets. Il suffit, par exemple pour la balle, de calculer son prochain point d'intersection, le temps où elle réalisera la collision, et il n'y a plus qu'à faire avancer la balle selon son vecteur vitesse jusqu'à ce qu'elle arrive au point d'intersection calculé. En prévision du prochain déplacement, on calcule aussi la prochaine direction de déplacement de la balle après le rebond.
     
     \subsection{Utilisation des \emph{bindings}}
     %
